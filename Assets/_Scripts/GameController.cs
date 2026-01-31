@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+[System.Serializable]
+public class MaskPart
+{
+    public string partType;
+    public List<Sprite> partSprites;
+}
 public class GameController : MonoBehaviour
 {
     [Header("Debug Info")]
-    [SerializeField] public string KillerMaskId ;
+    [SerializeField] public string KillerMaskId;
+
+    [SerializeField] public List<MaskPart> maskPartList;
     
     [Header("Dependencies")]
     [SerializeField] private UIManager UIManager;
@@ -45,13 +53,13 @@ public class GameController : MonoBehaviour
     {
         KillerMaskId = GenerateRandomMaskID();
         CreateKiller(KillerMaskId);
-        CreateMaskedNpcs(6);
+        CreateMaskedNpcs(25);
         StartCoroutine(StartCountdown());
     }
     IEnumerator ResetGame()
     {
-        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        yield return null;
     }
 
     IEnumerator StartCountdown(float runTimer = 5f)
@@ -187,8 +195,11 @@ public class GameController : MonoBehaviour
 
     private void GenerateClueList()
     {
-        var clueIndex = new List<char>();
+        var clueIndex = new List<MaskPart>();
         
+        clueIndex.Add(maskPartList[0]);
+
+        /*
         clueIndex.Add(KillerMaskId[0]);
         clueIndex.Add(KillerMaskId[0]);        
         int killerEyeIndex = int.Parse(KillerMaskId[0].ToString());
@@ -200,6 +211,7 @@ public class GameController : MonoBehaviour
         
         
         Debug.Log("Clue Eye Index: " + new string(clueIndex.ToArray()));
+        */
     }
 
     // Minimo pistas para ganar = Index[0].length *2
