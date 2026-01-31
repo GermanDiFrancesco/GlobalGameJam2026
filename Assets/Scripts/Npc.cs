@@ -22,7 +22,8 @@ public class Npc : MonoBehaviour
     private const float MinIdleTime = 3f;
     
     // Propiedad calculada: tiempo máximo de movimiento basado en la distancia máxima
-    private float MaxMoveTime => maxDistanceFromSpawn / moveSpeed;
+    //TODO: Dejarlo constante
+    private const float MaxMoveTime = 6f;
     
     private void Awake()
     {
