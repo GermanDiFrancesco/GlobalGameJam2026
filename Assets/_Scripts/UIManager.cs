@@ -4,11 +4,13 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("Pantallas UI")]
+    [Header("Buttons")]
+    [SerializeField] private Button comenzarButton;
+
+    [Header("UI Screens")]
     [SerializeField] private GameObject menuScreen;
     [SerializeField] private GameObject winScreen;
     [SerializeField] private GameObject loseScreen;
-    [SerializeField] private Button comenzarButton;
 
     public void ShowScreen(string screenName)
     {
@@ -37,6 +39,12 @@ public class UIManager : MonoBehaviour
         winScreen?.SetActive(false);
         loseScreen?.SetActive(false);
         Time.timeScale = 1f;
+    }
+
+    public void OnStartGameButtonPressed()
+    {
+        HideAllScreens();
+        Debug.Log("Juego iniciado.");        
     }
 
 }

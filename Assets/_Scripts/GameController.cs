@@ -5,26 +5,32 @@ using System.Collections;
 
 public class GameController : MonoBehaviour
 {
-    [Header("mascara del asesino")]
+    [Header("Debug Info")]
     [SerializeField] public string KillerMaskId ;
-    [Header("UI Manager")]
+    
+    [Header("Dependencies")]
     [SerializeField] private UIManager UIManager;
 
-    [Header("Renderers de la Máscara")]
+    [Header("Prefabs")]
     [SerializeField] private SuspectHandler suspectHandlerPrefab;
 
-    [Header("Colecciones de Sprites")]
+    [Header("Resources")]
     [SerializeField] public List<Sprite> noseSprites;
     [SerializeField] public List<Sprite> eyeSprites;
     [SerializeField] public List<Sprite> mouthSprites;
 
-    [Header("Reset")]
+    [Header("Key Bindings")]
     [SerializeField] private KeyCode resetKey = KeyCode.Escape;
+
+    void Awake()
+    {
+        Time.timeScale = 0f;
+    }
 
     void Start()
     {
-        Time.timeScale = 0f;
-        init();
+        StartGame();
+        GenerateClueList();
     }
 
     void Update()
@@ -35,33 +41,25 @@ public class GameController : MonoBehaviour
         }
     }
 
-    IEnumerator EndTimer(float runTimer = 5f)
+    public void StartGame()
     {
-        yield return new WaitForSeconds(runTimer);
-        CheckWinCondition();
+        KillerMaskId = GenerateRandomMaskID();
+        CreateKiller(KillerMaskId);
+        CreateMaskedNpcs(6);
+        StartCoroutine(StartCountdown());
     }
-    private void CheckWinCondition()
-    {
-        Debug.Log("Verificando condición de victoria...");
-        UIManager.ShowScreen("Lose");
-    }
-
     IEnumerator ResetGame()
     {
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        init();
     }
-    public void init()
+
+    IEnumerator StartCountdown(float runTimer = 5f)
     {
-        UIManager.HideAllScreens();
-        Time.timeScale = 1f;
-        KillerMaskId = GenerateRandomMaskID();
-        CreateKiller(KillerMaskId);
-        CreateMaskedNpcs(6);
-        StartCoroutine(EndTimer());
-        Debug.Log("Juego iniciado.");
+        yield return new WaitForSeconds(runTimer);
+        WinCondition(false);
     }
+    
 
     /// <summary>
     /// Genera un ID de máscara aleatorio que no coincide con el ID de la máscara del asesino si este ya esta definido.
@@ -163,5 +161,48 @@ public class GameController : MonoBehaviour
         Debug.Log("Asesino creado con máscara: " + mask);
     }
     
-    
+    public void AccusedKiller(string accusedID)
+    {
+        if (accusedID == KillerMaskId)    
+        {
+            WinCondition(true);
+        }
+        else
+        {
+            WinCondition(false);
+        }
+    }
+
+    private void WinCondition(bool condition)
+    {
+        if (condition)
+        {
+            UIManager.ShowScreen("Win");
+        }
+        else
+        {
+            UIManager.ShowScreen("Lose");
+        }
+    }
+
+    private void GenerateClueList()
+    {
+        var clueIndex = new List<char>();
+        
+        clueIndex.Add(KillerMaskId[0]);
+        clueIndex.Add(KillerMaskId[0]);        
+        int killerEyeIndex = int.Parse(KillerMaskId[0].ToString());
+        for (int i = 0; i < eyeSprites.Count; i++)
+        {
+            if (i == killerEyeIndex) continue;
+            clueIndex.Add(i.ToString()[0]);
+        }
+        
+        
+        Debug.Log("Clue Eye Index: " + new string(clueIndex.ToArray()));
+    }
+
+    // Minimo pistas para ganar = Index[0].length *2
+    // Maximo pistas para ganar = Index[0].length + Index[1].length + Index[2].length * 2
+        
 }
