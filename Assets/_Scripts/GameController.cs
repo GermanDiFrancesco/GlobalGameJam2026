@@ -7,13 +7,13 @@ public enum MaskPartType
     Ornament,
     Eyes // Escalable: Scar, Hat, Glasses, etc.
 }
-
 [System.Serializable]
 public class MaskPartLibrary
 {
     public MaskPartType type;
     public List<Sprite> sprites;
 }
+
 [System.Serializable]
 public struct MaskPartId
 {
@@ -74,7 +74,6 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         SpawnSuspects(npcCount);
-
         GenerateAllClues();
         AssignCluesToWitnesses();
     }
@@ -117,18 +116,15 @@ public class GameController : MonoBehaviour
     {
         Debug.Log($"KILLER → {killerIdentity.ToDebugString()}");
 
+        /*
         for (int i = 0; i < npcIdentities.Count; i++)
         {
             Debug.Log($"NPC {i} → {npcIdentities[i].ToDebugString()}");
-        }
+        }*/
     }
 
     // ========================= CLUES ========================
 
-    public Clue GetClue(int index)
-    {
-        return clues[index];
-    }
     private void GenerateAllClues()
     {
         clues = new List<Clue>();
@@ -141,12 +137,7 @@ public class GameController : MonoBehaviour
                 difficulty.falseCluesPerPart
             );
         }
-
         Shuffle(clues);
-    }
-    int GetRequiredWitnessCount()
-    {
-        return clues.Count;
     }
 
     private List<SuspectHandler> SelectWitnesses(int count)
@@ -158,15 +149,13 @@ public class GameController : MonoBehaviour
             if (!suspect.isKiller)
                 candidates.Add(suspect);
         }
-
         Shuffle(candidates);
 
         return candidates.GetRange(0, count);
     }
-
     private void AssignCluesToWitnesses()
     {
-        int witnessCount = GetRequiredWitnessCount();
+        int witnessCount = clues.Count;
         List<SuspectHandler> witnesses = SelectWitnesses(witnessCount);
 
         for (int i = 0; i < witnesses.Count; i++)
@@ -225,22 +214,6 @@ public class GameController : MonoBehaviour
         );
         */
     }
-
-    private void Shuffle<T>(List<T> list)
-    {
-        for (int i = list.Count - 1; i > 0; i--)
-        {
-            int j = Random.Range(0, i + 1);
-
-            T temp = list[i];
-            list[i] = list[j];
-            list[j] = temp;
-        }
-    }
-
-
-
-
 
     // ========================= INSTANTIATE NPCs ========================
 
@@ -318,6 +291,18 @@ public class GameController : MonoBehaviour
             .Find(l => l.type == partId.type);
 
         return library.sprites[partId.index];
+    }
+
+    private void Shuffle<T>(List<T> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+
+            T temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+        }
     }
 
 }

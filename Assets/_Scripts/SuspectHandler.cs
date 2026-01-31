@@ -2,7 +2,7 @@
 
 public class SuspectHandler : MonoBehaviour
 {   
-    [Header("Identidad")]
+    [Header("Identity")]
     [SerializeField] public bool isKiller;
     [SerializeField] public bool isWitness;
     [SerializeField] private Clue assignedClue;
