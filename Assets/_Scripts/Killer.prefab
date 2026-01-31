@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1621775070016715893}
   - component: {fileID: 6630534306689895973}
   m_Layer: 0
-  m_Name: Nose
+  m_Name: HAT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,8 +26,8 @@ Transform:
   m_GameObject: {fileID: 2950901842319438134}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.17, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 0, y: 0.975, z: 0}
+  m_LocalScale: {x: 0.03, y: 0.03, z: 0.03}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8222316790636503132}
@@ -81,12 +81,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 27ebf19e334e3c740b036b3b5447c246, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ea3a063353c2f194d82a30ee2fd0e1f9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.62, y: 4.79}
+  m_Size: {x: 41.836483, y: 33.89}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 3649988182008332821}
   - component: {fileID: 8306164110437639549}
   m_Layer: 0
-  m_Name: Eyes
+  m_Name: ANTIFA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +118,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.37, z: 0}
-  m_LocalScale: {x: 0.060225, y: 0.060225, z: 0.060225}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8222316790636503132}
@@ -172,12 +172,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: b7885888a366a714d9ed6d0fcf5fa5c9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c3387ec2be459a34ab1d83dd57fae6bc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 18.36, y: 4.37}
+  m_Size: {x: 29.629997, y: 15.856679}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -213,9 +213,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3649988182008332821}
-  - {fileID: 1621775070016715893}
   - {fileID: 1819090861572909924}
+  - {fileID: 1621775070016715893}
+  - {fileID: 3649988182008332821}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2209571231067746132
@@ -294,6 +294,15 @@ MonoBehaviour:
   nose: {fileID: 6630534306689895973}
   eyes: {fileID: 8306164110437639549}
   mouth: {fileID: 2468611096888875028}
+  moveRadiusPixels: 50
+  pixelsPerUnit: 100
+  changeInterval: 2
+  movementBounds:
+    serializedVersion: 2
+    x: -5
+    y: -5
+    width: 10
+    height: 10
 --- !u!1 &9137458684624584826
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,7 +314,7 @@ GameObject:
   - component: {fileID: 1819090861572909924}
   - component: {fileID: 2468611096888875028}
   m_Layer: 0
-  m_Name: Mouth
+  m_Name: ACC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320,7 +329,7 @@ Transform:
   m_GameObject: {fileID: 9137458684624584826}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.64, z: 0}
+  m_LocalPosition: {x: 0, y: 0.768, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -375,12 +384,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: cacded4c0d21e724396edff2e0452b86, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ce76c52c7adfcfb4baa2f73f25cfc1ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6.71, y: 5.76}
+  m_Size: {x: 3.79, y: 5.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

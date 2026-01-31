@@ -23,9 +23,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private SuspectHandler suspectHandlerPrefab;
 
     [Header("Resources")]
-    [SerializeField] public List<Sprite> noseSprites;
-    [SerializeField] public List<Sprite> eyeSprites;
-    [SerializeField] public List<Sprite> mouthSprites;
+    [SerializeField] public List<Sprite> HatSprites;
+    [SerializeField] public List<Sprite> AntifaceSprites;
+    [SerializeField] public List<Sprite> AccesorySprites;
 
     [Header("Key Bindings")]
     [SerializeField] private KeyCode resetKey = KeyCode.Escape;
@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour
     {
         KillerMaskId = GenerateRandomMaskID();
         CreateKiller(KillerMaskId);
-        CreateMaskedNpcs(25);
+        CreateMaskedNpcs(12);
         StartCoroutine(StartCountdown());
     }
     IEnumerator ResetGame()
@@ -77,18 +77,18 @@ public class GameController : MonoBehaviour
     {
         if (string.IsNullOrEmpty(KillerMaskId))
         {
-            int eyeIndex = Random.Range(0, eyeSprites.Count);
-            int noseIndex = Random.Range(0, noseSprites.Count);
-            int mouthIndex = Random.Range(0, mouthSprites.Count);
+            int eyeIndex = Random.Range(0, AntifaceSprites.Count);
+            int noseIndex = Random.Range(0, HatSprites.Count);
+            int mouthIndex = Random.Range(0, AccesorySprites.Count);
 
             return $"{eyeIndex}{noseIndex}{mouthIndex}";
         }
         string newMaskID;
         do
         {
-            int eyeIndex = Random.Range(0, eyeSprites.Count);
-            int noseIndex = Random.Range(0, noseSprites.Count);
-            int mouthIndex = Random.Range(0, mouthSprites.Count);
+            int eyeIndex = Random.Range(0, AntifaceSprites.Count);
+            int noseIndex = Random.Range(0, HatSprites.Count);
+            int mouthIndex = Random.Range(0, AccesorySprites.Count);
 
             newMaskID = $"{eyeIndex}{noseIndex}{mouthIndex}";
         } while (newMaskID == KillerMaskId);
@@ -120,28 +120,33 @@ public class GameController : MonoBehaviour
         int topCount = (cantidad + 1) / 2;    // si es impar, top tiene uno más
         int bottomCount = cantidad / 2;
 
-        float leftPad = 0.05f;
-        float rightPad = 0.95f;
-        float topY = 0.9f;
-        float bottomY = 0.1f;
+        // Configuración en píxeles
+        float spacingPx = 250f; // cada 250px en X
+        float topScreenY = Screen.height * 0.8f;
+        float bottomScreenY = Screen.height * 0.2f;
 
-        // Distribuir top
+        float topStartX = 0f;
+        float bottomStartX = 0f;
+
+        // Distribuir top (de izquierda a derecha, cada 250px)
         for (int i = 0; i < topCount; i++)
         {
-            float t = topCount == 1 ? 0.5f : Mathf.Lerp(leftPad, rightPad, i / (float)(topCount - 1));
-            Vector3 worldPos = cam.ViewportToWorldPoint(new Vector3(t, topY, zDistance));
+            float screenX = topStartX + i * spacingPx;
+            Vector3 worldPos = cam.ScreenToWorldPoint(new Vector3(screenX, topScreenY, zDistance));
             string newMask = GenerateRandomMaskID();
             CreateMaskedNpc(newMask, new Vector3(worldPos.x, worldPos.y, 0f));
         }
 
-        // Distribuir bottom (de izquierda a derecha)
+        // Distribuir bottom (de izquierda a derecha, cada 250px)
         for (int i = 0; i < bottomCount; i++)
         {
-            float t = bottomCount == 1 ? 0.5f : Mathf.Lerp(leftPad, rightPad, i / (float)(bottomCount - 1));
-            Vector3 worldPos = cam.ViewportToWorldPoint(new Vector3(t, bottomY, zDistance));
+            float screenX = bottomStartX + i * spacingPx;
+            Vector3 worldPos = cam.ScreenToWorldPoint(new Vector3(screenX, bottomScreenY, zDistance));
             string newMask = GenerateRandomMaskID();
             CreateMaskedNpc(newMask, new Vector3(worldPos.x, worldPos.y, 0f));
         }
+
+        Debug.Log(cantidad + " NPCs enmascarados creados (espaciados " + spacingPx + "px en X).");
     }
 
     public void CreateMaskedNpc(string mask, Vector3 position)
@@ -203,7 +208,7 @@ public class GameController : MonoBehaviour
         clueIndex.Add(KillerMaskId[0]);
         clueIndex.Add(KillerMaskId[0]);        
         int killerEyeIndex = int.Parse(KillerMaskId[0].ToString());
-        for (int i = 0; i < eyeSprites.Count; i++)
+        for (int i = 0; i < AntifaceSprites.Count; i++)
         {
             if (i == killerEyeIndex) continue;
             clueIndex.Add(i.ToString()[0]);
