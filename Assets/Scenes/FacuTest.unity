@@ -987,6 +987,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 089b7d18c61d3064ab6766e3f660e0bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  gameController: {fileID: 0}
   comenzarButton: {fileID: 932137517}
   menuScreen: {fileID: 1345413156}
   winScreen: {fileID: 1863901859}
@@ -1667,7 +1668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1345413157
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2076,7 +2077,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1867941676}
-  - component: {fileID: 1867941675}
+  - component: {fileID: 1867941677}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -2084,53 +2085,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1867941675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1867941674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 030ee55390546ee4c8c33e1c6d05ac13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  KillerMaskId: 
-  maskPartList:
-  - partType: Eyes
-    partSprites:
-    - {fileID: 21300000, guid: ca6743a077d49e1438b262ec118742aa, type: 3}
-    - {fileID: 21300000, guid: 39e62bc663a65044bbe534d6d3844183, type: 3}
-    - {fileID: 21300000, guid: 724e2aff6d3f1c24084ade19b31b91b1, type: 3}
-    - {fileID: 21300000, guid: b7885888a366a714d9ed6d0fcf5fa5c9, type: 3}
-  - partType: Nose
-    partSprites:
-    - {fileID: 21300000, guid: 27ebf19e334e3c740b036b3b5447c246, type: 3}
-    - {fileID: 21300000, guid: 260029b24c3d93b4eafc8f7bb6204c2f, type: 3}
-    - {fileID: 21300000, guid: 96cb06b3d657641479bd39d18fe19491, type: 3}
-    - {fileID: 21300000, guid: f7f117097ab22754db5fe75b22fb1784, type: 3}
-  - partType: Mouth
-    partSprites:
-    - {fileID: 21300000, guid: 5581e9ea56890a346bec4095da864c14, type: 3}
-    - {fileID: 21300000, guid: 8a0f0b971aa48f746ad332cb1090474a, type: 3}
-    - {fileID: 21300000, guid: d07c5bea0da959c4897682c3bfce21e7, type: 3}
-    - {fileID: 21300000, guid: cacded4c0d21e724396edff2e0452b86, type: 3}
-  UIManager: {fileID: 764922230}
-  suspectHandlerPrefab: {fileID: 4849986012498200608, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
-  noseSprites:
-  - {fileID: 21300000, guid: 27ebf19e334e3c740b036b3b5447c246, type: 3}
-  - {fileID: 21300000, guid: 260029b24c3d93b4eafc8f7bb6204c2f, type: 3}
-  - {fileID: 21300000, guid: 96cb06b3d657641479bd39d18fe19491, type: 3}
-  eyeSprites:
-  - {fileID: 21300000, guid: 39e62bc663a65044bbe534d6d3844183, type: 3}
-  - {fileID: 21300000, guid: 724e2aff6d3f1c24084ade19b31b91b1, type: 3}
-  - {fileID: 21300000, guid: b7885888a366a714d9ed6d0fcf5fa5c9, type: 3}
-  mouthSprites:
-  - {fileID: 21300000, guid: 8a0f0b971aa48f746ad332cb1090474a, type: 3}
-  - {fileID: 21300000, guid: d07c5bea0da959c4897682c3bfce21e7, type: 3}
-  - {fileID: 21300000, guid: cacded4c0d21e724396edff2e0452b86, type: 3}
-  resetKey: 27
 --- !u!4 &1867941676
 Transform:
   m_ObjectHideFlags: 0
@@ -2146,6 +2100,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 109091031}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1867941677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867941674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2961ef93f0a1da946ac71b94542c178e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameController
+  npcIdentities: []
+  suspectPrefab: {fileID: 7253405686316034282, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
+  npcCount: 25
+  npcSpacing: 1.5
+  difficulty:
+    falseCluesPerPart: 2
+  clues: []
+  maskPartLibraries:
+  - type: 0
+    sprites:
+    - {fileID: 21300000, guid: fec87d2205a23ef4eb05f842410f4d33, type: 3}
+    - {fileID: 21300000, guid: f53d7bda343da6a4897ca8fc2f982684, type: 3}
+    - {fileID: 21300000, guid: 1b3f0ade8fc004b45a397ead7c98ebce, type: 3}
+    - {fileID: 21300000, guid: ea3a063353c2f194d82a30ee2fd0e1f9, type: 3}
+  - type: 1
+    sprites:
+    - {fileID: 21300000, guid: 7f186010a41120e40b82f804af5d9d35, type: 3}
+    - {fileID: 21300000, guid: ce76c52c7adfcfb4baa2f73f25cfc1ae, type: 3}
+    - {fileID: 21300000, guid: 68615f35477b4b943b0e44017a20fc76, type: 3}
+    - {fileID: 21300000, guid: ce237f32982a2944c9a6077960a20cb2, type: 3}
+    - {fileID: 21300000, guid: f5e1bee657ed428479b0d1ebb70e752d, type: 3}
+    - {fileID: 21300000, guid: c7b24232c2321af479682359c9b8bed6, type: 3}
+  - type: 2
+    sprites:
+    - {fileID: 21300000, guid: bca91fab33d4a9241b2d5c3d8eb8deac, type: 3}
+    - {fileID: 21300000, guid: 15d8a390e29c44d42af76e98b7261347, type: 3}
+    - {fileID: 21300000, guid: 8b727541ca524b94996f81a561e18596, type: 3}
+    - {fileID: 21300000, guid: 371461d58f697114a8d58969b5eb5206, type: 3}
+    - {fileID: 21300000, guid: c3387ec2be459a34ab1d83dd57fae6bc, type: 3}
+    - {fileID: 21300000, guid: ab644963e936d3c4bbf4444bd6de1be5, type: 3}
+    - {fileID: 21300000, guid: 32a18180372d4ff44b0c9e683a996dda, type: 3}
+    - {fileID: 21300000, guid: 643ed35ff24fb6d46b318434d4883049, type: 3}
+    - {fileID: 21300000, guid: a6c9ab7b24bb6ce4893d93ed9e0b678e, type: 3}
+    - {fileID: 21300000, guid: cffb4ad7c8cbe7a488a139ffc8035331, type: 3}
 --- !u!1 &2040787013
 GameObject:
   m_ObjectHideFlags: 0
@@ -2194,11 +2194,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7253405686316034282, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
       propertyPath: m_Name
-      value: Killer
+      value: NPC
       objectReference: {fileID: 0}
     - target: {fileID: 7253405686316034282, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8222316790636503132, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
       propertyPath: m_LocalPosition.x

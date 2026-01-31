@@ -1,74 +1,142 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SuspectHandler : MonoBehaviour
-{
-    [Header("Dependencias")]
-    [SerializeField] public GameController gameController;
-
-    [Header("Mascara del asesino")]
+{   
+    [Header("Identidad")]
     [SerializeField] public bool isKiller;
+    [SerializeField] public bool isWitness;
+    [SerializeField] private Clue assignedClue;
 
-    [Header("Renderers de la Máscara")]
-    [SerializeField] private SpriteRenderer nose;
-    [SerializeField] private SpriteRenderer eyes;
-    [SerializeField] private SpriteRenderer mouth;
+    [Header("Dependencies")]
+    [SerializeField] private GameController gameController;
+
+    [Header("Renderers")]
+    [SerializeField] private SpriteRenderer hatRenderer;
+    [SerializeField] private SpriteRenderer ornamentRenderer;
+    [SerializeField] private SpriteRenderer eyesRenderer;
 
     [Header("Movimiento aleatorio tipo 'wandering'")]
-    [SerializeField] private float moveRadiusPixels = 50f;
-    [SerializeField] private float pixelsPerUnit = 100f;
-    [Tooltip("Velocidad máxima en unidades del mundo")]
-    [SerializeField] private float maxSpeed = 1f;
-    [Tooltip("Magnitud del jitter aleatorio (unidades/seg)")]
-    [SerializeField] private float jitter = 1f;
-    [Tooltip("Fuerza para mantener al NPC cerca del origen")]
-    [SerializeField] private float returnStrength = 4f;
-    [Tooltip("Freno aplicado a la velocidad cada frame (0..1, 1=no freno)")]
-    [SerializeField] private float damping = 0.98f;
-    [Tooltip("Rect de límites en unidades del mundo (x,y,width,height)")]
-    [SerializeField] private Rect movementBounds = new Rect(-5f, -5f, 10f, 10f);
+    private float moveRadiusPixels = 50f;
+    private float pixelsPerUnit = 100f;
+    private float maxSpeed = 1f;
+    private float jitter = 1f;
+    private float returnStrength = 4f;
+    private float damping = 0.98f;
+    private Rect movementBounds = new Rect(-5f, -5f, 200f, 10f);
 
     private Vector2 origin;
     private Vector2 velocity;
     private float moveRadiusUnits;
 
+    #region Inicialización pública (GameController)
+
+    /// <summary>
+    /// Inicializa completamente al NPC desde el GameController
+    /// </summary>
+    public void Initialize(
+        GameController controller,
+        MaskIdentity identity,
+        bool killer,
+        Vector3 worldPosition
+    )
+    {
+        gameController = controller;
+        isKiller = killer;
+
+        transform.position = worldPosition;
+        origin = worldPosition;
+
+        ApplyIdentity(identity);
+    }
+    public void SetAsWitness(Clue clue)
+    {
+        assignedClue = clue;
+        isWitness = true;
+    }
+    public void DebugWitness()
+    {
+        if (!isWitness) return;
+
+        Debug.Log(
+            $"WITNESS → {assignedClue.part.type}:{assignedClue.part.index}"
+        );
+    }
+
+    #endregion
+
+    #region Identidad visual
+
+    private void ApplyIdentity(MaskIdentity identity)
+    {
+        foreach (var part in identity.parts)
+        {
+            // reconstruimos un MaskPartId SOLO para pedir el sprite
+            MaskPartId partId = new MaskPartId
+            {
+                type = part.Key,
+                index = part.Value
+            };
+
+            Sprite sprite = gameController.GetSprite(partId);
+
+            switch (part.Key)
+            {
+                case MaskPartType.Hat:
+                    hatRenderer.sprite = sprite;
+                    break;
+
+                case MaskPartType.Ornament:
+                    ornamentRenderer.sprite = sprite;
+                    break;
+
+                case MaskPartType.Eyes:
+                    eyesRenderer.sprite = sprite;
+                    break;
+            }
+        }
+    }
+
+
+    #endregion
+
+    #region Movimiento
+
     private void Start()
     {
-        origin = transform.position;
         moveRadiusUnits = moveRadiusPixels / Mathf.Max(1f, pixelsPerUnit);
-        // ajustar velocidad máxima por defecto relativa al radio si el usuario no lo cambia
-        if (maxSpeed <= 0f) maxSpeed = moveRadiusUnits / 2f;
+
+        if (maxSpeed <= 0f)
+            maxSpeed = moveRadiusUnits / 2f;
+
         velocity = Vector2.zero;
     }
 
     private void Update()
     {
-        Vector2 pos = (Vector2)transform.position;
+        Vector2 pos = transform.position;
 
-        // jitter aleatorio suave (wander)
         Vector2 randomJitter = Random.insideUnitCircle * jitter * Time.deltaTime;
         velocity += randomJitter;
 
-        // empuje suave hacia el origen si se acerca a salirse del radio permitido
         Vector2 toOrigin = origin - pos;
         float dist = toOrigin.magnitude;
+
         if (dist > moveRadiusUnits)
         {
-            // fuerza proporcional al exceso de distancia
-            Vector2 pull = toOrigin.normalized * returnStrength * (dist - moveRadiusUnits) * Time.deltaTime;
+            Vector2 pull =
+                toOrigin.normalized *
+                returnStrength *
+                (dist - moveRadiusUnits) *
+                Time.deltaTime;
+
             velocity += pull;
         }
 
-        // limitar velocidad
         if (velocity.sqrMagnitude > maxSpeed * maxSpeed)
             velocity = velocity.normalized * maxSpeed;
 
-        // aplicar damping para que parezca caminata más natural
         velocity *= damping;
-
-        // mover
         pos += velocity * Time.deltaTime;
-
-        // mantener dentro de los bounds del mundo
         pos = ClampToBounds(pos);
 
         transform.position = pos;
@@ -76,23 +144,10 @@ public class SuspectHandler : MonoBehaviour
 
     private Vector2 ClampToBounds(Vector2 pos)
     {
-        float minX = movementBounds.xMin;
-        float maxX = movementBounds.xMax;
-        float minY = movementBounds.yMin;
-        float maxY = movementBounds.yMax;
-        pos.x = Mathf.Clamp(pos.x, minX, maxX);
-        pos.y = Mathf.Clamp(pos.y, minY, maxY);
+        pos.x = Mathf.Clamp(pos.x, movementBounds.xMin, movementBounds.xMax);
+        pos.y = Mathf.Clamp(pos.y, movementBounds.yMin, movementBounds.yMax);
         return pos;
     }
 
-    public void ApplyMaskFromData(string maskData)
-    {
-        int eyeIndex = int.Parse(maskData[0].ToString());
-        int noseIndex = int.Parse(maskData[1].ToString());
-        int mouthIndex = int.Parse(maskData[2].ToString());
-
-        eyes.sprite = gameController.AntifaceSprites[eyeIndex];
-        nose.sprite = gameController.HatSprites[noseIndex];
-        mouth.sprite = gameController.AccesorySprites[mouthIndex];
-    }
+    #endregion
 }

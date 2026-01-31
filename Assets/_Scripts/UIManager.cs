@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Dependencies")]
+    [SerializeField] private GameController gameController;
+
     [Header("Buttons")]
     [SerializeField] private Button comenzarButton;
 
@@ -45,6 +48,11 @@ public class UIManager : MonoBehaviour
     {
         HideAllScreens();
         Debug.Log("Juego iniciado.");        
+    }
+
+    public Sprite ShowWitnessClueSprite(Clue assignedClue)
+    {
+        return gameController.GetSprite(assignedClue.part);
     }
 
 }

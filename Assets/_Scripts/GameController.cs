@@ -1,225 +1,323 @@
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-using System.Collections;
+
+public enum MaskPartType
+{
+    Hat,
+    Ornament,
+    Eyes // Escalable: Scar, Hat, Glasses, etc.
+}
 
 [System.Serializable]
-public class MaskPart
+public class MaskPartLibrary
 {
-    public string partType;
-    public List<Sprite> partSprites;
+    public MaskPartType type;
+    public List<Sprite> sprites;
 }
+[System.Serializable]
+public struct MaskPartId
+{
+    public MaskPartType type;
+    public int index;
+}
+[System.Serializable]
+public class MaskIdentity
+{
+    public Dictionary<MaskPartType, int> parts;
+    public string ToDebugString()
+    {
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        sb.Append("MaskIdentity { ");
+
+        foreach (var part in parts)
+        {
+            sb.Append($"{part.Key}:{part.Value} ");
+        }
+
+        sb.Append("}");
+
+        return sb.ToString();
+    }
+}
+
+[System.Serializable]
+public struct Clue
+{
+    public MaskPartId part;
+}
+[System.Serializable]
+public struct ClueDifficultyConfig
+{
+    public int falseCluesPerPart; // min 1, 2 o 3
+}
+
 public class GameController : MonoBehaviour
 {
-    [Header("Debug Info")]
-    [SerializeField] public string KillerMaskId;
+    [Header("NPCs")]
+    [SerializeField] private MaskIdentity killerIdentity;
+    [SerializeField] List<MaskIdentity> npcIdentities = new List<MaskIdentity>();
 
-    [SerializeField] public List<MaskPart> maskPartList;
+    [Header("NPCs Generation")]
+    [SerializeField] private GameObject suspectPrefab;
+    [SerializeField] private int npcCount = 100;
+    [SerializeField] private float npcSpacing = 1.5f;
+    private List<SuspectHandler> spawnedSuspects = new List<SuspectHandler>();
     
-    [Header("Dependencies")]
-    [SerializeField] private UIManager UIManager;
+    [Header("Clues")]
+    [SerializeField] private ClueDifficultyConfig difficulty;
+    [SerializeField] private List<Clue> clues;
 
-    [Header("Prefabs")]
-    [SerializeField] private SuspectHandler suspectHandlerPrefab;
+    [Header("Sprite Resources")]
+    [SerializeField] private List<MaskPartLibrary> maskPartLibraries;
 
-    [Header("Resources")]
-    [SerializeField] public List<Sprite> HatSprites;
-    [SerializeField] public List<Sprite> AntifaceSprites;
-    [SerializeField] public List<Sprite> AccesorySprites;
-
-    [Header("Key Bindings")]
-    [SerializeField] private KeyCode resetKey = KeyCode.Escape;
-
-    void Awake()
+    private void Start()
     {
-        Time.timeScale = 0f;
+        SpawnSuspects(npcCount);
+
+        GenerateAllClues();
+        AssignCluesToWitnesses();
     }
 
-    void Start()
-    {
-        StartGame();
-        GenerateClueList();
-    }
+    // ========================= IDENTITY GENERATION ========================
 
-    void Update()
+    public MaskIdentity GenerateRandomIdentity()
     {
-        if (Input.GetKeyDown(resetKey))
+        var identity = new MaskIdentity
         {
-            StartCoroutine(ResetGame());
+            parts = new Dictionary<MaskPartType, int>()
+        };
+
+        foreach (var library in maskPartLibraries)
+        {
+            identity.parts[library.type] =
+                Random.Range(0, library.sprites.Count);
+        }
+
+        return identity;
+    }
+
+    public bool AreIdentitiesEqual(MaskIdentity a, MaskIdentity b)
+    {
+        if (a.parts.Count != b.parts.Count)
+            return false;
+
+        foreach (var kvp in a.parts)
+        {
+            if (!b.parts.TryGetValue(kvp.Key, out int value))
+                return false;
+
+            if (value != kvp.Value)
+                return false;
+        }
+
+        return true;
+    }
+    private void DebugIdentities()
+    {
+        Debug.Log($"KILLER → {killerIdentity.ToDebugString()}");
+
+        for (int i = 0; i < npcIdentities.Count; i++)
+        {
+            Debug.Log($"NPC {i} → {npcIdentities[i].ToDebugString()}");
         }
     }
 
-    public void StartGame()
-    {
-        KillerMaskId = GenerateRandomMaskID();
-        CreateKiller(KillerMaskId);
-        CreateMaskedNpcs(12);
-        StartCoroutine(StartCountdown());
-    }
-    IEnumerator ResetGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        yield return null;
-    }
+    // ========================= CLUES ========================
 
-    IEnumerator StartCountdown(float runTimer = 5f)
+    public Clue GetClue(int index)
     {
-        yield return new WaitForSeconds(runTimer);
-        WinCondition(false);
+        return clues[index];
     }
-    
-
-    /// <summary>
-    /// Genera un ID de máscara aleatorio que no coincide con el ID de la máscara del asesino si este ya esta definido.
-    /// </summary>
-    /// <returns></returns>
-    public string GenerateRandomMaskID()
+    private void GenerateAllClues()
     {
-        if (string.IsNullOrEmpty(KillerMaskId))
+        clues = new List<Clue>();
+
+        foreach (var part in killerIdentity.parts)
         {
-            int eyeIndex = Random.Range(0, AntifaceSprites.Count);
-            int noseIndex = Random.Range(0, HatSprites.Count);
-            int mouthIndex = Random.Range(0, AccesorySprites.Count);
-
-            return $"{eyeIndex}{noseIndex}{mouthIndex}";
+            GenerateCluesForPart(
+                part.Key,
+                part.Value,
+                difficulty.falseCluesPerPart
+            );
         }
-        string newMaskID;
-        do
-        {
-            int eyeIndex = Random.Range(0, AntifaceSprites.Count);
-            int noseIndex = Random.Range(0, HatSprites.Count);
-            int mouthIndex = Random.Range(0, AccesorySprites.Count);
 
-            newMaskID = $"{eyeIndex}{noseIndex}{mouthIndex}";
-        } while (newMaskID == KillerMaskId);
-
-        return newMaskID;
-
+        Shuffle(clues);
+    }
+    int GetRequiredWitnessCount()
+    {
+        return clues.Count;
     }
 
-    /// <summary>
-    /// Crea una cantidad especificada de NPCs enmascarados distribuidos a lo largo del eje X,
-    /// algunos en la parte superior y algunos en la parte inferior de la pantalla.
-    /// </summary>
-    public void CreateMaskedNpcs(int cantidad)
+    private List<SuspectHandler> SelectWitnesses(int count)
     {
-        Camera cam = Camera.main;
-        if (cam == null)
+        List<SuspectHandler> candidates = new();
+
+        foreach (var suspect in spawnedSuspects)
         {
-            Debug.LogWarning("Main Camera no encontrada. No se pueden posicionar NPCs.");
-            for (int i = 0; i < cantidad; i++)
+            if (!suspect.isKiller)
+                candidates.Add(suspect);
+        }
+
+        Shuffle(candidates);
+
+        return candidates.GetRange(0, count);
+    }
+
+    private void AssignCluesToWitnesses()
+    {
+        int witnessCount = GetRequiredWitnessCount();
+        List<SuspectHandler> witnesses = SelectWitnesses(witnessCount);
+
+        for (int i = 0; i < witnesses.Count; i++)
+        {
+            witnesses[i].SetAsWitness(clues[i]);
+        }
+    }
+
+    private void GenerateCluesForPart(
+    MaskPartType type,
+    int killerIndex,
+    int falseClueCount
+)
+    {
+        var library = maskPartLibraries.Find(l => l.type == type);
+
+        List<int> availableFalseIndexes = new List<int>();
+
+        for (int i = 0; i < library.sprites.Count; i++)
+        {
+            if (i != killerIndex)
+                availableFalseIndexes.Add(i);
+        }
+
+        Shuffle(availableFalseIndexes);
+
+        for (int i = 0; i < falseClueCount; i++)
+        {
+            clues.Add(new Clue
             {
-                string newMask = GenerateRandomMaskID();
-                CreateMaskedNpc(newMask, Vector3.zero);
-            }
-            return;
+                part = new MaskPartId
+                {
+                    type = type,
+                    index = availableFalseIndexes[i]
+                }
+            });
         }
 
-        float zDistance = Mathf.Abs(cam.transform.position.z);
-
-        int topCount = (cantidad + 1) / 2;    // si es impar, top tiene uno más
-        int bottomCount = cantidad / 2;
-
-        // Configuración en píxeles
-        float spacingPx = 250f; // cada 250px en X
-        float topScreenY = Screen.height * 0.8f;
-        float bottomScreenY = Screen.height * 0.2f;
-
-        float topStartX = 0f;
-        float bottomStartX = 0f;
-
-        // Distribuir top (de izquierda a derecha, cada 250px)
-        for (int i = 0; i < topCount; i++)
+        // dos pistas correctas
+        for (int i = 0; i < 2; i++)
         {
-            float screenX = topStartX + i * spacingPx;
-            Vector3 worldPos = cam.ScreenToWorldPoint(new Vector3(screenX, topScreenY, zDistance));
-            string newMask = GenerateRandomMaskID();
-            CreateMaskedNpc(newMask, new Vector3(worldPos.x, worldPos.y, 0f));
+            clues.Add(new Clue
+            {
+                part = new MaskPartId
+                {
+                    type = type,
+                    index = killerIndex
+                }
+            });
         }
-
-        // Distribuir bottom (de izquierda a derecha, cada 250px)
-        for (int i = 0; i < bottomCount; i++)
-        {
-            float screenX = bottomStartX + i * spacingPx;
-            Vector3 worldPos = cam.ScreenToWorldPoint(new Vector3(screenX, bottomScreenY, zDistance));
-            string newMask = GenerateRandomMaskID();
-            CreateMaskedNpc(newMask, new Vector3(worldPos.x, worldPos.y, 0f));
-        }
-
-        Debug.Log(cantidad + " NPCs enmascarados creados (espaciados " + spacingPx + "px en X).");
-    }
-
-    public void CreateMaskedNpc(string mask, Vector3 position)
-    {        
-        int eyeIndex = int.Parse(mask[0].ToString());
-        int noseIndex = int.Parse(mask[1].ToString());
-        int mouthIndex = int.Parse(mask[2].ToString());
-        
-        SuspectHandler suspectObj = Instantiate(suspectHandlerPrefab.gameObject, position, Quaternion.identity).GetComponent<SuspectHandler>();
-        suspectObj.gameController = this;
-        suspectObj.ApplyMaskFromData(mask);
-        Debug.Log("NPC creado con máscara: " + mask + " en " + position);
-    }
-
-    public void CreateKiller(string mask)
-    {        
-        int eyeIndex = int.Parse(mask[0].ToString());
-        int noseIndex = int.Parse(mask[1].ToString());
-        int mouthIndex = int.Parse(mask[2].ToString());
-        
-        SuspectHandler suspectObj = Instantiate(suspectHandlerPrefab.gameObject, Vector3.zero, Quaternion.identity).GetComponent<SuspectHandler>();
-        suspectObj.gameController = GetComponent<GameController>();
-        suspectObj.ApplyMaskFromData(mask);
-        suspectObj.isKiller = true;
-        Debug.Log("Asesino creado con máscara: " + mask);
-    }
-    
-    public void AccusedKiller(string accusedID)
-    {
-        if (accusedID == KillerMaskId)    
-        {
-            WinCondition(true);
-        }
-        else
-        {
-            WinCondition(false);
-        }
-    }
-
-    private void WinCondition(bool condition)
-    {
-        if (condition)
-        {
-            UIManager.ShowScreen("Win");
-        }
-        else
-        {
-            UIManager.ShowScreen("Lose");
-        }
-    }
-
-    private void GenerateClueList()
-    {
-        var clueIndex = new List<MaskPart>();
-        
-        clueIndex.Add(maskPartList[0]);
 
         /*
-        clueIndex.Add(KillerMaskId[0]);
-        clueIndex.Add(KillerMaskId[0]);        
-        int killerEyeIndex = int.Parse(KillerMaskId[0].ToString());
-        for (int i = 0; i < AntifaceSprites.Count; i++)
-        {
-            if (i == killerEyeIndex) continue;
-            clueIndex.Add(i.ToString()[0]);
-        }
-        
-        
-        Debug.Log("Clue Eye Index: " + new string(clueIndex.ToArray()));
+        Debug.Log(
+            $"Generated clues for {type} → " +
+            $"Correct:{killerIndex} False:{falseClueCount}"
+        );
         */
     }
 
-    // Minimo pistas para ganar = Index[0].length *2
-    // Maximo pistas para ganar = Index[0].length + Index[1].length + Index[2].length * 2
-        
+    private void Shuffle<T>(List<T> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+
+            T temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+        }
+    }
+
+
+
+
+
+    // ========================= INSTANTIATE NPCs ========================
+
+    public void SpawnSuspects(int npcCount)
+    {
+        spawnedSuspects.Clear();
+
+        // 1. Generar identidad del asesino
+        killerIdentity = GenerateRandomIdentity();
+
+        // 2. Generar identidades que no lo repitan
+        npcIdentities.Clear();
+
+        while (npcIdentities.Count < npcCount - 1)
+        {
+            MaskIdentity candidate = GenerateRandomIdentity();
+
+            if (!AreIdentitiesEqual(candidate, killerIdentity))
+            {
+                npcIdentities.Add(candidate);
+            }
+        }
+
+        // 3. Instanciar asesino (index 0)
+        SpawnSingleSuspect(
+            killerIdentity,
+            true,
+            Vector3.zero
+        );
+
+        // 4. Instanciar NPCs normales
+        for (int i = 0; i < npcIdentities.Count; i++)
+        {
+            Vector3 pos = new Vector3((i + 1) * npcSpacing, 0f, 0f);
+
+            SpawnSingleSuspect(
+                npcIdentities[i],
+                false,
+                pos
+            );
+        }
+
+        DebugIdentities();
+    }
+
+    private void SpawnSingleSuspect(
+    MaskIdentity identity,
+    bool isKiller,
+    Vector3 position
+)
+    {
+        GameObject instance = Instantiate(
+            suspectPrefab,
+            position,
+            Quaternion.identity
+        );
+
+        SuspectHandler suspect = instance.GetComponent<SuspectHandler>();
+
+        suspect.Initialize(
+            this,
+            identity,
+            isKiller,
+            position
+        );
+
+        spawnedSuspects.Add(suspect);
+    }
+
+    // ========================= HELPERS ========================
+
+    public Sprite GetSprite(MaskPartId partId)
+    {
+        var library = maskPartLibraries
+            .Find(l => l.type == partId.type);
+
+        return library.sprites[partId.index];
+    }
+
 }
