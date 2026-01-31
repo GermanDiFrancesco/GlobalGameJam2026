@@ -2114,7 +2114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameController
   npcIdentities: []
   suspectPrefab: {fileID: 7253405686316034282, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
-  npcCount: 25
+  npcCount: 50
   npcSpacing: 1.5
   difficulty:
     falseCluesPerPart: 2
