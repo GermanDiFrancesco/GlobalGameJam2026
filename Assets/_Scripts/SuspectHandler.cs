@@ -160,6 +160,7 @@ public class SuspectHandler : MonoBehaviour
     {
         StartCoroutine(DelayInicial());
         StartCoroutine(StateMachine());
+        delayWitnessing = Random.Range(3f, 20f);
         if (isWitness) StartCoroutine(DelayedWitnessing(delayWitnessing));
     }
 
