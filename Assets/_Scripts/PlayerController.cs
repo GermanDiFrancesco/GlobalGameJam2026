@@ -1,10 +1,11 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    private const float MoveSpeed = 20f;
-    private const float InteractHoldTime = 1f;
-    private const float InteractRadius = 1.2f;
+    [Header("Movement")]
+    [SerializeField] private float MoveSpeed = 20f;
+    [SerializeField] private const float InteractHoldTime = 1f;
+    [SerializeField] private const float InteractRadius = .5f;
 
     private Rigidbody2D _rigidbody2D;
     private Vector3 _moveDir;

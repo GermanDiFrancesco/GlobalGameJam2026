@@ -22,8 +22,8 @@ public class SuspectHandler : MonoBehaviour
     [SerializeField] private GameObject investigateIndicator;
 
     [Header("Configuración de Movimiento")]
-    [SerializeField] private float moveSpeed = 8f;
-    [SerializeField] private float maxDistanceFromSpawn = 5f;
+    [SerializeField] private float moveSpeed = 1.4f;
+    [SerializeField] private float maxDistanceFromSpawn = 3f;
     [SerializeField] private float maxIdleTime = 6f;
     private const float MinIdleTime = 3f;
     private const float MaxMoveTime = 6f;
