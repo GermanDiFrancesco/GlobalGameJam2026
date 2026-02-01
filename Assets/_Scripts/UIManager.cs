@@ -7,8 +7,14 @@ public class UIManager : MonoBehaviour
     #region Dependencies
     [Header("Dependencies")]
     [SerializeField] private GameController gameController;
+    [SerializeField] private SoundManager soundManager;
+    [SerializeField] private GameObject musicManager;
     #endregion
-    
+
+    [Header("Sound Clips")]
+    [SerializeField] private AudioClip winAudio;
+    [SerializeField] private AudioClip loseAudio;
+
     [Header("Carriage")]
     [SerializeField] private CarriageHandler carriage;
     
@@ -130,9 +136,13 @@ public class UIManager : MonoBehaviour
                 break;
             case "Win":
                 winScreen?.SetActive(true);
+                SoundManager.PlaySoundAndDestroy(winAudio);
+                Destroy(musicManager);
                 break;
             case "Lose":
                 loseScreen?.SetActive(true);
+                SoundManager.PlaySoundAndDestroy(loseAudio);
+                Destroy(musicManager);                    
                 break;
             default:
                 Debug.LogWarning("Nombre de pantalla no reconocido: " + screenName);

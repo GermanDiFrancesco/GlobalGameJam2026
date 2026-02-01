@@ -98,7 +98,7 @@ public class GameController : MonoBehaviour
         GenerateAllClues();
         AssignCluesToWitnesses();
         SetupTimer();
-        _musicManager.SetMusicTrack();
+        //_musicManager.SetMusicTrack();
     }
     
     private void SetupTimer()
