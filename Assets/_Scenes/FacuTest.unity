@@ -252,50 +252,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 17573574}
   m_CullTransparentMesh: 1
---- !u!1 &53135855
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 53135856}
-  - component: {fileID: 53135857}
-  m_Layer: 0
-  m_Name: TimerController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &53135856
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 53135855}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 109091031}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &53135857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 53135855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c63bdeb863972375b1d0410ace92961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TimerUI
 --- !u!1 &64514521
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,7 +455,6 @@ Transform:
   m_Children:
   - {fileID: 1867941676}
   - {fileID: 764922229}
-  - {fileID: 53135856}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &184793062
@@ -2124,11 +2079,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 089b7d18c61d3064ab6766e3f660e0bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  gameController: {fileID: 0}
+  gameController: {fileID: 1867941677}
+  carriage: {fileID: 2100244119}
   comenzarButton: {fileID: 932137517}
-  hatIMG: {fileID: 1702564426}
-  ornamentIMG: {fileID: 455536355}
-  eyesIMG: {fileID: 2052126716}
+  hatIMG: {fileID: 0}
+  ornamentIMG: {fileID: 0}
+  eyesIMG: {fileID: 0}
   menuScreen: {fileID: 1345413156}
   winScreen: {fileID: 1863901859}
   loseScreen: {fileID: 507320950}
@@ -3618,8 +3574,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 863879521}
   - {fileID: 1566654603}
+  - {fileID: 863879521}
   m_Father: {fileID: 927111900}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6032,6 +5988,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2052126714}
   m_CullTransparentMesh: 1
+--- !u!114 &2100244119 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7112322061603120109, guid: cb8d947fe1db3c24ebb3fe9f15bee209, type: 3}
+  m_PrefabInstance: {fileID: 511707332440359949}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebe2111863a7a4049acb35392a4d067b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1001 &326096563062316936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6177,6 +6144,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7112322061603120109, guid: cb8d947fe1db3c24ebb3fe9f15bee209, type: 3}
+      propertyPath: uiManager
+      value: 
+      objectReference: {fileID: 764922230}
     - target: {fileID: 7185960534537402127, guid: cb8d947fe1db3c24ebb3fe9f15bee209, type: 3}
       propertyPath: m_Name
       value: Carriage

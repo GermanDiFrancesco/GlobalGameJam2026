@@ -8,11 +8,19 @@ public class UIManager : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private GameController gameController;
     #endregion
-
+    
+    [Header("Carriage")]
+    [SerializeField] private CarriageHandler carriage;
+    
     #region UI Elements
     [Header("Buttons")]
     [SerializeField] private Button comenzarButton;
 
+    [Header("Clock Settings")]
+    [SerializeField] private float _gameTimeInSeconds = 120f;
+    [SerializeField] private int _startHour = 23;
+    [SerializeField] private int _startMinute = 58;
+    
     [Header("Identikit")]
     [SerializeField] private Image hatIMG;
     [SerializeField] private Image ornamentIMG;
@@ -28,11 +36,7 @@ public class UIManager : MonoBehaviour
     [Header("Timer")]
     [SerializeField] private Text _timerText;
     
-    [Header("Clock Settings")]
-    [SerializeField] private float _gameTimeInSeconds = 120f;
-    [SerializeField] private int _startHour = 23;
-    [SerializeField] private int _startMinute = 58;
-    
+    public float GameTimeInSeconds => _gameTimeInSeconds; 
     private float _currentTime;
     private bool _isTimerRunning;
     
@@ -119,7 +123,6 @@ public class UIManager : MonoBehaviour
     public void ShowScreen(string screenName)
     {
         HideAllScreens();
-        Time.timeScale = 0f;
         switch (screenName)
         {
             case "Menu":
@@ -141,13 +144,24 @@ public class UIManager : MonoBehaviour
         menuScreen?.SetActive(false);
         winScreen?.SetActive(false);
         loseScreen?.SetActive(false);
-        Time.timeScale = 1f;
+        Time.timeScale = 0f;
     }
     
     public void OnStartGameButtonPressed()
     {
         HideAllScreens();
         StartTimer();
+        
+        // Iniciar la carroza
+        if (carriage != null)
+        {
+            carriage.StartMovement();
+        }
+        else
+        {
+            Debug.LogWarning("Carriage no está asignado en UIManager!");
+        } 
+        
         Debug.Log("Juego iniciado.");        
     }
     #endregion
