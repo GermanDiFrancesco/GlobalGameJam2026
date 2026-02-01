@@ -55,6 +55,10 @@ public struct ClueDifficultyConfig
 
 public class GameController : MonoBehaviour
 {
+    [Header("Game Config")]
+    [SerializeField] private float gameTime = 105f;
+    [SerializeField] private ClueDifficultyConfig difficulty;
+
     [Header("NPCs")]
     [SerializeField] private MaskIdentity killerIdentity;
     [SerializeField] List<MaskIdentity> npcIdentities = new List<MaskIdentity>();
@@ -67,7 +71,6 @@ public class GameController : MonoBehaviour
     private List<SuspectHandler> spawnedSuspects = new List<SuspectHandler>();
     
     [Header("Clues")]
-    [SerializeField] private ClueDifficultyConfig difficulty;
     [SerializeField] private List<Clue> clues;
 
     [Header("Sprite Resources")]
