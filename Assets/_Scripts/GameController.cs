@@ -215,6 +215,32 @@ public class GameController : MonoBehaviour
         */
     }
 
+    // ========================= GAME STATES ========================
+
+    public void OnPlayerInvestigate(Clue clue)
+    {
+        // Mostrar sprite en canvas
+        Debug.Log($"INVESTIGATE → {clue.part.type}:{clue.part.index}");
+    }
+    public void OnPlayerAccuse(SuspectHandler suspect)
+    {
+        Debug.Log($"ACCUSE → {(suspect.isKiller ? "KILLER" : "WRONG")}");
+        if (suspect.isKiller)
+            OnPlayerWin();
+        else
+            OnPlayerLose();
+    }
+
+    private void OnPlayerWin()
+    {
+        Debug.Log("GANASTE");
+    }
+
+    private void OnPlayerLose()
+    {
+        Debug.Log("PERDISTE");
+    }
+
     // ========================= INSTANTIATE NPCs ========================
 
     public void SpawnSuspects(int npcCount)

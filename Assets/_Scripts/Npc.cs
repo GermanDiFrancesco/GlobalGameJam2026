@@ -105,7 +105,7 @@ public class Npc : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rigidbody2D.velocity = _moveDir * moveSpeed;
+        _rigidbody2D.linearVelocity = _moveDir * moveSpeed;
     }
 
     private void OnDrawGizmosSelected()

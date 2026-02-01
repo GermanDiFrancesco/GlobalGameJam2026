@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class SuspectHandler : MonoBehaviour
 {   
@@ -15,20 +16,35 @@ public class SuspectHandler : MonoBehaviour
     [SerializeField] private SpriteRenderer ornamentRenderer;
     [SerializeField] private SpriteRenderer eyesRenderer;
 
-    [Header("Movimiento aleatorio tipo 'wandering'")]
-    private float moveRadiusPixels = 50f;
-    private float pixelsPerUnit = 100f;
-    private float maxSpeed = 1f;
-    private float jitter = 1f;
-    private float returnStrength = 4f;
-    private float damping = 0.98f;
-    private Rect movementBounds = new Rect(-5f, -5f, 200f, 10f);
+    [Header("Interaction Indicators")]
+    [SerializeField] private GameObject indicatorRoot;
+    [SerializeField] private GameObject accuseIndicator;
+    [SerializeField] private GameObject investigateIndicator;
 
-    private Vector2 origin;
-    private Vector2 velocity;
-    private float moveRadiusUnits;
+    [Header("Configuración de Movimiento")]
+    [SerializeField] private float moveSpeed = 8f;
+    [SerializeField] private float maxDistanceFromSpawn = 5f;
+    [SerializeField] private float maxIdleTime = 6f;
+    private const float MinIdleTime = 3f;
+    private const float MaxMoveTime = 6f;
 
-    #region Inicialización pública (GameController)
+    private Rigidbody2D _rigidbody2D;
+    private Vector2 _spawnPosition;
+    private Vector2 _moveDir;
+    private enum NPCState { Idle, Moving }
+    private NPCState _currentState;
+
+    public void OnInteracted()
+    {
+        if (isWitness)
+        {
+            gameController.OnPlayerInvestigate(assignedClue);
+            return;
+        }
+        gameController.OnPlayerAccuse(this);
+    }
+
+    #region Initialization
 
     /// <summary>
     /// Inicializa completamente al NPC desde el GameController
@@ -44,7 +60,6 @@ public class SuspectHandler : MonoBehaviour
         isKiller = killer;
 
         transform.position = worldPosition;
-        origin = worldPosition;
 
         ApplyIdentity(identity);
     }
@@ -64,7 +79,7 @@ public class SuspectHandler : MonoBehaviour
 
     #endregion
 
-    #region Identidad visual
+    #region Visuals
 
     private void ApplyIdentity(MaskIdentity identity)
     {
@@ -96,58 +111,124 @@ public class SuspectHandler : MonoBehaviour
         }
     }
 
+    public void SetInteractionIndicator(bool show)
+    {
+        if (!indicatorRoot) return;
+
+        indicatorRoot.SetActive(show);
+
+        if (!show) return;
+
+        //accuseIndicator.SetActive(!isWitness);
+        //investigateIndicator.SetActive(isWitness);
+    }
+
 
     #endregion
 
-    #region Movimiento
+    #region Movement
 
+    private void Awake()
+    {
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+        _spawnPosition = transform.position;
+    }
     private void Start()
     {
-        moveRadiusUnits = moveRadiusPixels / Mathf.Max(1f, pixelsPerUnit);
-
-        if (maxSpeed <= 0f)
-            maxSpeed = moveRadiusUnits / 2f;
-
-        velocity = Vector2.zero;
+        StartCoroutine(StateMachine());
     }
+
+
 
     private void Update()
     {
-        Vector2 pos = transform.position;
-
-        Vector2 randomJitter = Random.insideUnitCircle * jitter * Time.deltaTime;
-        velocity += randomJitter;
-
-        Vector2 toOrigin = origin - pos;
-        float dist = toOrigin.magnitude;
-
-        if (dist > moveRadiusUnits)
-        {
-            Vector2 pull =
-                toOrigin.normalized *
-                returnStrength *
-                (dist - moveRadiusUnits) *
-                Time.deltaTime;
-
-            velocity += pull;
-        }
-
-        if (velocity.sqrMagnitude > maxSpeed * maxSpeed)
-            velocity = velocity.normalized * maxSpeed;
-
-        velocity *= damping;
-        pos += velocity * Time.deltaTime;
-        pos = ClampToBounds(pos);
-
-        transform.position = pos;
+        
+    }
+    private void FixedUpdate()
+    {
+        _rigidbody2D.linearVelocity = _moveDir * moveSpeed;
     }
 
-    private Vector2 ClampToBounds(Vector2 pos)
+    private IEnumerator StateMachine()
     {
-        pos.x = Mathf.Clamp(pos.x, movementBounds.xMin, movementBounds.xMax);
-        pos.y = Mathf.Clamp(pos.y, movementBounds.yMin, movementBounds.yMax);
-        return pos;
+        while (true)
+        {
+            switch (_currentState)
+            {
+                case NPCState.Idle:
+                    yield return StartCoroutine(IdleState());
+                    break;
+
+                case NPCState.Moving:
+                    yield return StartCoroutine(MovingState());
+                    break;
+            }
+        }
+    }
+    private IEnumerator IdleState()
+    {
+        _moveDir = Vector2.zero;
+
+        // Tiempo de idle entre 3 y maxIdleTime
+        float idleTime = Random.Range(MinIdleTime, maxIdleTime);
+        yield return new WaitForSeconds(idleTime);
+
+        _currentState = NPCState.Moving;
+    }
+    private IEnumerator MovingState()
+    {
+        ChooseNewDirection();
+
+        // Tiempo de movimiento entre 0 y el máximo calculado
+        float moveTime = Random.Range(0f, MaxMoveTime);
+        yield return new WaitForSeconds(moveTime);
+
+        _currentState = NPCState.Idle;
+    }
+    private void ChooseNewDirection()
+    {
+        const int maxAttempts = 10;
+
+        for (int i = 0; i < maxAttempts; i++)
+        {
+            // Generamos dirección aleatoria
+            Vector2 randomDirection = new Vector2(
+                Random.Range(-1f, 1f),
+                Random.Range(-1f, 1f)
+            ).normalized;
+
+            // Proyectamos usando el máximo tiempo calculado
+            Vector2 futurePosition = (Vector2)transform.position +
+                                    randomDirection * maxDistanceFromSpawn;
+
+            // Verificamos si está dentro del radio
+            if (Vector2.Distance(futurePosition, _spawnPosition) <= maxDistanceFromSpawn)
+            {
+                _moveDir = randomDirection;
+                return;
+            }
+        }
+
+        // Si no encontramos dirección válida, volvemos al spawn
+        _moveDir = (_spawnPosition - (Vector2)transform.position).normalized;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Vector2 center = Application.isPlaying ? _spawnPosition : (Vector2)transform.position;
+
+        // Círculo del radio máximo (amarillo)
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(center, maxDistanceFromSpawn);
+
+        if (Application.isPlaying)
+        {
+            // Estado actual: rojo (idle) o verde (moving)
+            Gizmos.color = _currentState == NPCState.Idle ? Color.red : Color.green;
+            Gizmos.DrawWireSphere(transform.position, 0.3f);
+        }
     }
 
     #endregion
+
 }
