@@ -135,15 +135,10 @@ public class SuspectHandler : MonoBehaviour
     }
     private void Start()
     {
+        StartCoroutine(DelayInicial());
         StartCoroutine(StateMachine());
     }
 
-
-
-    private void Update()
-    {
-        
-    }
     private void FixedUpdate()
     {
         _rigidbody2D.linearVelocity = _moveDir * moveSpeed;
@@ -165,6 +160,15 @@ public class SuspectHandler : MonoBehaviour
             }
         }
     }
+    
+    private IEnumerator DelayInicial()
+    {
+        float idleTime = Random.Range(0f, 10f);
+        yield return new WaitForSeconds(idleTime);
+
+        _currentState = NPCState.Moving;
+    }
+    
     private IEnumerator IdleState()
     {
         _moveDir = Vector2.zero;
