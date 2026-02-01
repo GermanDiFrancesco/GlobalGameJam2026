@@ -240,7 +240,6 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("GANASTE");
     }
-
     private void OnPlayerLose()
     {
         Debug.Log("PERDISTE");
