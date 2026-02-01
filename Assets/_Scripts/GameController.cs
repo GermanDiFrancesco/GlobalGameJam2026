@@ -87,6 +87,8 @@ public class GameController : MonoBehaviour
         GenerateAllClues();
         AssignCluesToWitnesses();
         SetupTimer();
+
+        CarriageHandler carriage = Instantiate<CarriageHandler>(new(), Vector3.zero, Quaternion.identity);
     }
     
     private void SetupTimer()
@@ -107,6 +109,7 @@ public class GameController : MonoBehaviour
         Debug.Log("¡TIEMPO AGOTADO!");
         OnPlayerLose();
     }
+
     // ========================= IDENTITY GENERATION ========================
 
     public MaskIdentity GenerateRandomIdentity()

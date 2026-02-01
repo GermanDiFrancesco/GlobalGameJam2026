@@ -1,14 +1,14 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class CarriageMover2D : MonoBehaviour
+public class CarriageHandler : MonoBehaviour
 {
+    [Header("TimeConfiguration")]
+    [SerializeField] public float travelTime = 5f;
+
     [Header("World Positions")]
     [SerializeField] private Vector2 worldStartPosition;
     [SerializeField] private Vector2 worldEndPosition;
-
-    [Header("Timing")]
-    [SerializeField] private float travelTime = 5f;
 
     private Rigidbody2D rb;
     private float timer;
@@ -29,8 +29,6 @@ public class CarriageMover2D : MonoBehaviour
     {
         timer = 0f;
         isMoving = true;
-
-        // Posición inicial absoluta en el mundo
         rb.position = worldStartPosition;
     }
 
