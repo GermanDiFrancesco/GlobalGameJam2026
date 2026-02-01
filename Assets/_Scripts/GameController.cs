@@ -81,6 +81,8 @@ public class GameController : MonoBehaviour
     [FormerlySerializedAs("_timerUI")]
     [Header("UI")]
     [SerializeField] private UIManager _uiManager;
+    [SerializeField] private MusicManager _musicManager;
+    //TODO: [SerializeField] private Track _musicTrack;
 
     private void Start()
     {
@@ -96,6 +98,7 @@ public class GameController : MonoBehaviour
         GenerateAllClues();
         AssignCluesToWitnesses();
         SetupTimer();
+        _musicManager.SetMusicTrack();
     }
     
     private void SetupTimer()

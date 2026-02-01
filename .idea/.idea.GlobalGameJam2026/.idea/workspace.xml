@@ -5,10 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b98342a-bedb-42c1-8d9f-71c75dcb087b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Sound.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/Music.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/Music/Music-Entrenamiento.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/Music/Music-Entrenamiento.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/Music/Music-Gameplay.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/Music/Music-Gameplay.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/Music/Music-MenuLoop.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/Music/Music-MenuLoop.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/Music/Music-Victoria.ogg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/Music/Music-Victoria.ogg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/SFX.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/SFX/Boton Menu.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/SFX/Boton Menu.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/SFX/Sfx-Perdiste.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Sound/SFX/Sfx-Perdiste.wav.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Scripts/MusicManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Scripts/MusicManager.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GlobalGameJam2026/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GlobalGameJam2026/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Scripts/GameController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scripts/GameController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Scripts/LoseBehaviuor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scripts/LoseBehaviuor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Scripts/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scripts/UIManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +37,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/_Scripts/CarriageHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/_Scripts/FollowPlayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/_Scripts/GameController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/_Scripts/MusicManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/_Scripts/UIManager.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
