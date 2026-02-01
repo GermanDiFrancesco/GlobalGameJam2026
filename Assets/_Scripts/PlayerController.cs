@@ -4,8 +4,8 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float MoveSpeed = 20f;
-    [SerializeField] private const float InteractHoldTime = 1f;
-    [SerializeField] private const float InteractRadius = .5f;
+    [SerializeField] private float InteractHoldTime = 1f;
+    [SerializeField] private float InteractRadius = 1.25f;
 
     private Rigidbody2D _rigidbody2D;
     private Vector3 _moveDir;
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            SuspectHandler suspect = hit.GetComponent<SuspectHandler>();
+            SuspectHandler suspect = hit.GetComponentInParent<SuspectHandler>();
             if (suspect != null)
                 return suspect;
         }

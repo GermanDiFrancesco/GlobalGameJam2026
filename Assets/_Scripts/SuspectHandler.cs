@@ -21,7 +21,7 @@ public class SuspectHandler : MonoBehaviour
     [SerializeField] private GameObject accuseIndicator;
     [SerializeField] private GameObject investigateIndicator;
 
-    [Header("Configuración de Movimiento")]
+    [Header("Movement")]
     [SerializeField] private float moveSpeed = 1.4f;
     [SerializeField] private float maxDistanceFromSpawn = 3f;
     [SerializeField] private float maxIdleTime = 6f;
@@ -114,7 +114,6 @@ public class SuspectHandler : MonoBehaviour
     public void SetInteractionIndicator(bool show)
     {
         if (!indicatorRoot) return;
-
         indicatorRoot.SetActive(show);
 
         if (!show) return;
@@ -130,7 +129,7 @@ public class SuspectHandler : MonoBehaviour
 
     private void Awake()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
+        _rigidbody2D = GetComponentInChildren<Rigidbody2D>();
         _spawnPosition = transform.position;
     }
     private void Start()

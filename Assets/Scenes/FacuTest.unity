@@ -907,10 +907,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 519420032}
+  - component: {fileID: 519420033}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
-  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1034,7 +1034,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1782438698}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519420033
 MonoBehaviour:
@@ -1048,6 +1048,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b176e1479144c24cb7852296ef6ae20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  _target: {fileID: 1782438698}
+  _smoothSpeed: 5
+  _offset: {x: 0, y: 0, z: -10}
+  _minX: 0.6
+  _maxX: 38.9
 --- !u!1 &692521867
 GameObject:
   m_ObjectHideFlags: 0
@@ -3057,7 +3062,7 @@ Transform:
   m_Children:
   - {fileID: 1679083412}
   - {fileID: 277901294}
-  - {fileID: 519420032}
+  - {fileID: 692521868}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1782438700
@@ -3073,6 +3078,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   MoveSpeed: 2
+  InteractHoldTime: 1
+  InteractRadius: 0.6
 --- !u!1 &1863901859
 GameObject:
   m_ObjectHideFlags: 0
@@ -3273,6 +3280,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3315959425473723838, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
+      propertyPath: m_Radius
+      value: 0.40510422
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315959425473723838, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4632999961614226429, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5245818453596265843, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8219644
+      objectReference: {fileID: 0}
+    - target: {fileID: 5245818453596265843, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8219644
+      objectReference: {fileID: 0}
+    - target: {fileID: 5245818453596265843, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8219644
+      objectReference: {fileID: 0}
     - target: {fileID: 7253405686316034282, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
       propertyPath: m_Name
       value: NPC
@@ -3336,6 +3367,7 @@ SceneRoots:
   - {fileID: 927111900}
   - {fileID: 250374526}
   - {fileID: 8580675501285582897}
+  - {fileID: 519420032}
   - {fileID: 1782438698}
   - {fileID: 908555572}
   - {fileID: 884929153}
