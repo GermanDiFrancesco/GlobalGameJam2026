@@ -72,14 +72,43 @@ public class GameController : MonoBehaviour
 
     [Header("Sprite Resources")]
     [SerializeField] private List<MaskPartLibrary> maskPartLibraries;
+    
+    [Header("Timer")]
+    [SerializeField] private TimerUI _timerUI;
 
     private void Start()
     {
         SpawnSuspects(npcCount);
         GenerateAllClues();
         AssignCluesToWitnesses();
+        SetupTimer();
+    }
+    
+    private void SetupTimer()
+    {
+        if (_timerUI != null)
+        {
+            _timerUI.OnMidnightReached += OnTimerExpired;
+            _timerUI.StartTimer();
+        }
+        else
+        {
+            Debug.LogWarning("TimerUI no está asignado en el Inspector!");
+        }
     }
 
+    private void OnDestroy()
+    {
+        if (_timerUI != null)
+        {
+            _timerUI.OnMidnightReached -= OnTimerExpired;
+        }
+    }    
+    private void OnTimerExpired()
+    {
+        Debug.Log("¡TIEMPO AGOTADO!");
+        OnPlayerLose();
+    }
     // ========================= IDENTITY GENERATION ========================
 
     public MaskIdentity GenerateRandomIdentity()
