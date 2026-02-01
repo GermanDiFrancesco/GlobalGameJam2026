@@ -8,20 +8,30 @@ public class SuspectHandler : MonoBehaviour
     [SerializeField] public bool isWitness;
     [SerializeField] private Clue assignedClue;
 
+    [Header("Witness")]
+    [SerializeField] public float delayWitnessing;
+    [SerializeField] private bool isWitnessAlready = false;
+    [SerializeField] private bool givedClue = false;
+
     [Header("Dependencies")]
     [SerializeField] private GameController gameController;
+
+    [Header("Sprites")]
+    [SerializeField] private Sprite body;
+    [SerializeField] private Sprite bodyHandsUp;
 
     [Header("Renderers")]
     [SerializeField] private SpriteRenderer hatRenderer;
     [SerializeField] private SpriteRenderer ornamentRenderer;
     [SerializeField] private SpriteRenderer eyesRenderer;
     [SerializeField] private SpriteRenderer clueRenderer;
+    [SerializeField] private SpriteRenderer bodyRenderer;
 
     [Header("Interaction Indicators")]
     [SerializeField] private GameObject speechRoot;
     [SerializeField] private GameObject indicatorRoot;
     [SerializeField] private GameObject accuseIndicator;
-    [SerializeField] private GameObject investigateIndicator;
+    [SerializeField] private GameObject interrogateIndicator;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 1.4f;
@@ -41,6 +51,10 @@ public class SuspectHandler : MonoBehaviour
         if (isWitness)
         {
             gameController.OnPlayerInvestigate(assignedClue);
+            givedClue = true;
+            indicatorRoot.SetActive(false);
+            speechRoot.SetActive(true);
+            clueRenderer.enabled = true;
             return;
         }
         gameController.OnPlayerAccuse(this);
@@ -48,9 +62,6 @@ public class SuspectHandler : MonoBehaviour
 
     #region Initialization
 
-    /// <summary>
-    /// Inicializa completamente al NPC desde el GameController
-    /// </summary>
     public void Initialize(
         GameController controller,
         MaskIdentity identity,
@@ -60,19 +71,15 @@ public class SuspectHandler : MonoBehaviour
     {
         gameController = controller;
         isKiller = killer;
-
         transform.position = worldPosition;
-
         ApplyIdentity(identity);
     }
+
     public void SetAsWitness(Clue clue)
     {
         assignedClue = clue;
-        isWitness = true;
-
-        speechRoot.SetActive(true);
-        clueRenderer.sprite = clue.sprite;
-        clueRenderer.enabled = true;
+        isWitness = true;        
+        clueRenderer.sprite = clue.sprite;        
     }
     public void DebugWitness()
     {
@@ -81,6 +88,30 @@ public class SuspectHandler : MonoBehaviour
         Debug.Log(
             $"WITNESS → {assignedClue.part.type}:{assignedClue.part.index}"
         );
+    }
+
+    public void SetInteractionIndicator(bool show)
+    {
+        if (!givedClue)
+        {
+            if (!indicatorRoot) return;
+            indicatorRoot.SetActive(show);
+
+            interrogateIndicator.SetActive(isWitness);
+            accuseIndicator.SetActive(!isWitness);
+
+            if (!show) return;
+        }
+        //if (isWitnessAlready) indicatorRoot.SetActive(false);
+    }
+
+    private IEnumerator DelayedWitnessing(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isWitnessAlready = true;
+        bodyRenderer.sprite = bodyHandsUp;
+        moveSpeed = 0;
+        SetInteractionIndicator(true);
     }
 
     #endregion
@@ -97,7 +128,6 @@ public class SuspectHandler : MonoBehaviour
                 type = part.Key,
                 index = part.Value
             };
-
             Sprite sprite = gameController.GetSprite(partId);
 
             switch (part.Key)
@@ -117,18 +147,6 @@ public class SuspectHandler : MonoBehaviour
         }
     }
 
-    public void SetInteractionIndicator(bool show)
-    {
-        if (!indicatorRoot) return;
-        indicatorRoot.SetActive(show);
-
-        if (!show) return;
-
-        //accuseIndicator.SetActive(!isWitness);
-        //investigateIndicator.SetActive(isWitness);
-    }
-
-
     #endregion
 
     #region Movement
@@ -142,6 +160,7 @@ public class SuspectHandler : MonoBehaviour
     {
         StartCoroutine(DelayInicial());
         StartCoroutine(StateMachine());
+        if (isWitness) StartCoroutine(DelayedWitnessing(delayWitnessing));
     }
 
     private void FixedUpdate()
