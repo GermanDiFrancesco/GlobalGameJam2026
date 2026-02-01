@@ -73,6 +73,7 @@ public class GameController : MonoBehaviour
     
     [Header("Clues")]
     [SerializeField] private List<Clue> clues;
+    private Dictionary<MaskPartId, int> clueCounter = new();
 
     [Header("Sprite Resources")]
     [SerializeField] private List<MaskPartLibrary> maskPartLibraries;
@@ -88,7 +89,7 @@ public class GameController : MonoBehaviour
         AssignCluesToWitnesses();
         SetupTimer();
 
-        CarriageHandler carriage = Instantiate<CarriageHandler>(new(), Vector3.zero, Quaternion.identity);
+        //CarriageHandler carriage = Instantiate<CarriageHandler>(new(), Vector3.zero, Quaternion.identity);
     }
     
     private void SetupTimer()
@@ -254,8 +255,38 @@ public class GameController : MonoBehaviour
 
     public void OnPlayerInvestigate(Clue clue)
     {
-        // Mostrar sprite en canvas
-        Debug.Log($"INVESTIGATE → {clue.part.type}:{clue.part.index}");
+        var partId = clue.part;
+
+        // Inicializar contador si no existe
+        if (!clueCounter.ContainsKey(partId))
+        {
+            clueCounter[partId] = 0;
+        }
+
+        clueCounter[partId]++;
+
+        Debug.Log(
+            $"PISTA → {partId.type}:{partId.index} " +
+            $"({clueCounter[partId]}/2)"
+        );
+
+        if (clueCounter[partId] == 2)
+        {
+            ConfirmClue(partId);
+        }
+    }
+    private void ConfirmClue(MaskPartId partId)
+    {
+        Debug.Log(
+            $"PISTA CONFIRMADA → {partId.type}:{partId.index}"
+        );
+
+        Sprite confirmedSprite = GetSprite(partId);
+
+        _uiManager.UpdateIdentikit(
+            partId.type,
+            confirmedSprite
+        );
     }
     public void OnPlayerAccuse(SuspectHandler suspect)
     {

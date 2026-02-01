@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System;using UnityEngine;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,6 +12,11 @@ public class UIManager : MonoBehaviour
     #region UI Elements
     [Header("Buttons")]
     [SerializeField] private Button comenzarButton;
+
+    [Header("Identikit")]
+    [SerializeField] private Image hatIMG;
+    [SerializeField] private Image ornamentIMG;
+    [SerializeField] private Image eyesIMG;
 
     [Header("UI Screens")]
     [SerializeField] private GameObject menuScreen;
@@ -131,7 +136,6 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-
     public void HideAllScreens()
     {
         menuScreen?.SetActive(false);
@@ -149,9 +153,29 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Witness Methods
-    public Sprite ShowWitnessClueSprite(Clue assignedClue)
+    public void UpdateIdentikit(
+    MaskPartType type,
+    Sprite sprite
+)
     {
-        return gameController.GetSprite(assignedClue.part);
+        switch (type)
+        {
+            case MaskPartType.Hat:
+                hatIMG.sprite = sprite;
+                hatIMG.gameObject.SetActive(true);
+                break;
+
+            case MaskPartType.Ornament:
+                ornamentIMG.sprite = sprite;
+                ornamentIMG.gameObject.SetActive(true);
+                break;
+
+            case MaskPartType.Eyes:
+                eyesIMG.sprite = sprite;
+                eyesIMG.gameObject.SetActive(true);
+                break;
+        }
     }
+
     #endregion
 }
