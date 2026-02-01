@@ -15,8 +15,10 @@ public class SuspectHandler : MonoBehaviour
     [SerializeField] private SpriteRenderer hatRenderer;
     [SerializeField] private SpriteRenderer ornamentRenderer;
     [SerializeField] private SpriteRenderer eyesRenderer;
+    [SerializeField] private SpriteRenderer clueRenderer;
 
     [Header("Interaction Indicators")]
+    [SerializeField] private GameObject speechRoot;
     [SerializeField] private GameObject indicatorRoot;
     [SerializeField] private GameObject accuseIndicator;
     [SerializeField] private GameObject investigateIndicator;
@@ -67,6 +69,10 @@ public class SuspectHandler : MonoBehaviour
     {
         assignedClue = clue;
         isWitness = true;
+
+        speechRoot.SetActive(true);
+        clueRenderer.sprite = clue.sprite;
+        clueRenderer.enabled = true;
     }
     public void DebugWitness()
     {
@@ -107,7 +113,7 @@ public class SuspectHandler : MonoBehaviour
                 case MaskPartType.Eyes:
                     eyesRenderer.sprite = sprite;
                     break;
-            }
+            }            
         }
     }
 

@@ -45,6 +45,7 @@ public class MaskIdentity
 public struct Clue
 {
     public MaskPartId part;
+    public Sprite sprite;
 }
 [System.Serializable]
 public struct ClueDifficultyConfig
@@ -62,6 +63,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject suspectPrefab;
     [SerializeField] private int npcCount = 100;
     [SerializeField] private float npcSpacing = 1.5f;
+    [SerializeField] private Collider2D spawnAreaCollider;
     private List<SuspectHandler> spawnedSuspects = new List<SuspectHandler>();
     
     [Header("Clues")]
@@ -182,38 +184,41 @@ public class GameController : MonoBehaviour
 
         Shuffle(availableFalseIndexes);
 
+        // pistas falsas
         for (int i = 0; i < falseClueCount; i++)
         {
+            int index = availableFalseIndexes[i];
+
+            var partId = new MaskPartId
+            {
+                type = type,
+                index = index
+            };
+
             clues.Add(new Clue
             {
-                part = new MaskPartId
-                {
-                    type = type,
-                    index = availableFalseIndexes[i]
-                }
+                part = partId,
+                sprite = GetSprite(partId)
             });
         }
 
         // dos pistas correctas
         for (int i = 0; i < 2; i++)
         {
+            var partId = new MaskPartId
+            {
+                type = type,
+                index = killerIndex
+            };
+
             clues.Add(new Clue
             {
-                part = new MaskPartId
-                {
-                    type = type,
-                    index = killerIndex
-                }
+                part = partId,
+                sprite = GetSprite(partId)
             });
         }
-
-        /*
-        Debug.Log(
-            $"Generated clues for {type} → " +
-            $"Correct:{killerIndex} False:{falseClueCount}"
-        );
-        */
     }
+
 
     // ========================= GAME STATES ========================
 
@@ -264,16 +269,17 @@ public class GameController : MonoBehaviour
         }
 
         // 3. Instanciar asesino (index 0)
+        Vector2 killerPos = GetRandomPointInBounds(spawnAreaCollider.bounds);
         SpawnSingleSuspect(
             killerIdentity,
             true,
-            Vector3.zero
+            killerPos
         );
 
         // 4. Instanciar NPCs normales
         for (int i = 0; i < npcIdentities.Count; i++)
         {
-            Vector3 pos = new Vector3((i + 1) * npcSpacing, 0f, 0f);
+            Vector2 pos = GetRandomPointInBounds(spawnAreaCollider.bounds);
 
             SpawnSingleSuspect(
                 npcIdentities[i],
@@ -307,6 +313,13 @@ public class GameController : MonoBehaviour
         );
 
         spawnedSuspects.Add(suspect);
+    }
+
+    private Vector2 GetRandomPointInBounds(Bounds bounds)
+    {
+        float x = Random.Range(bounds.min.x, bounds.max.x);
+        float y = Random.Range(bounds.min.y, bounds.max.y);
+        return new Vector2(x, y);
     }
 
     // ========================= HELPERS ========================
