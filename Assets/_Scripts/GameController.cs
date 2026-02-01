@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum MaskPartType
 {
@@ -76,8 +77,9 @@ public class GameController : MonoBehaviour
     [Header("Sprite Resources")]
     [SerializeField] private List<MaskPartLibrary> maskPartLibraries;
     
-    [Header("Timer")]
-    [SerializeField] private TimerUI _timerUI;
+    [FormerlySerializedAs("_timerUI")]
+    [Header("UI")]
+    [SerializeField] private UIManager _uiManager;
 
     private void Start()
     {
@@ -89,24 +91,17 @@ public class GameController : MonoBehaviour
     
     private void SetupTimer()
     {
-        if (_timerUI != null)
+        if (_uiManager != null)
         {
-            _timerUI.OnMidnightReached += OnTimerExpired;
-            _timerUI.StartTimer();
+            _uiManager.OnMidnightReached += OnTimerExpired;
+            _uiManager.StartTimer();
         }
         else
         {
-            Debug.LogWarning("TimerUI no está asignado en el Inspector!");
+            Debug.LogWarning("UIManager no está asignado en el Inspector!");
         }
     }
 
-    private void OnDestroy()
-    {
-        if (_timerUI != null)
-        {
-            _timerUI.OnMidnightReached -= OnTimerExpired;
-        }
-    }    
     private void OnTimerExpired()
     {
         Debug.Log("¡TIEMPO AGOTADO!");
@@ -262,6 +257,13 @@ public class GameController : MonoBehaviour
     public void OnPlayerAccuse(SuspectHandler suspect)
     {
         Debug.Log($"ACCUSE → {(suspect.isKiller ? "KILLER" : "WRONG")}");
+        
+        // Pausar el timer al acusar
+        if (_uiManager != null)
+        {
+            _uiManager.PauseTimer();
+        } 
+        
         if (suspect.isKiller)
             OnPlayerWin();
         else
@@ -271,10 +273,12 @@ public class GameController : MonoBehaviour
     private void OnPlayerWin()
     {
         Debug.Log("GANASTE");
+        _uiManager?.ShowScreen("Win"); 
     }
     private void OnPlayerLose()
     {
         Debug.Log("PERDISTE");
+        _uiManager?.ShowScreen("Lose"); 
     }
 
     // ========================= INSTANTIATE NPCs ========================
