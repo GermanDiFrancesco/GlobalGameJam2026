@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public enum MaskPartType
@@ -57,7 +58,6 @@ public struct ClueDifficultyConfig
 public class GameController : MonoBehaviour
 {
     [Header("Game Config")]
-    [SerializeField] private float gameTime = 105f;
     [SerializeField] private ClueDifficultyConfig difficulty;
 
     [Header("NPCs")]
@@ -84,12 +84,18 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        initGame();
+    }
+    public void Reset()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void initGame()
+    {
         SpawnSuspects(npcCount);
         GenerateAllClues();
         AssignCluesToWitnesses();
         SetupTimer();
-
-        //CarriageHandler carriage = Instantiate<CarriageHandler>(new(), Vector3.zero, Quaternion.identity);
     }
     
     private void SetupTimer()

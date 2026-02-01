@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3b98342a-bedb-42c1-8d9f-71c75dcb087b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GlobalGameJam2026/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GlobalGameJam2026/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Scenes/FacuTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scenes/FacuTest.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Scripts/CarriageHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scripts/CarriageHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Scripts/GameController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scripts/GameController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Scripts/LoseBehaviuor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scripts/LoseBehaviuor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Scripts/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Scripts/UIManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -149,7 +149,10 @@ public class UIManager : MonoBehaviour
     
     public void OnStartGameButtonPressed()
     {
+        gameController.Reset();
         HideAllScreens();
+        
+        Time.timeScale = 1f;
         StartTimer();
         
         // Iniciar la carroza
