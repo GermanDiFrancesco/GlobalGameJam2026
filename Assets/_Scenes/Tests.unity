@@ -559,9 +559,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 424335492}
+  - component: {fileID: 424335493}
   - component: {fileID: 424335491}
   - component: {fileID: 424335490}
-  - component: {fileID: 424335493}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -670,6 +670,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34034d5a3b53d99a2b776ec0a3c0fc41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  MoveSpeed: 20
+  InteractHoldTime: 1
+  InteractRadius: 1.25
+  upKey: 119
+  leftKey: 97
+  downKey: 115
+  rightKey: 100
+  interactKey: 32
 --- !u!1 &574958188
 GameObject:
   m_ObjectHideFlags: 0

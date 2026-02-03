@@ -424,12 +424,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -14
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -9026576827283409551, guid: b752631e9fd7e8e46ab7be3ae43b48d6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b752631e9fd7e8e46ab7be3ae43b48d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 29.629997, y: 15.856679}
+  m_Size: {x: 16.9, y: 14.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1027,7 +1027,7 @@ GameObject:
   - component: {fileID: 5736473420423826364}
   - component: {fileID: 410019254940728198}
   m_Layer: 0
-  m_Name: SuspectNPC
+  m_Name: Suspect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1076,7 +1076,7 @@ MonoBehaviour:
   isWitnessAlready: 0
   givedClue: 0
   gameController: {fileID: 0}
-  body: {fileID: -9026576827283409551, guid: b752631e9fd7e8e46ab7be3ae43b48d6, type: 3}
+  body: {fileID: 21300000, guid: b752631e9fd7e8e46ab7be3ae43b48d6, type: 3}
   bodyHandsUp: {fileID: 21300000, guid: ce1839fda43685d4fa2803779ef944c9, type: 3}
   hatRenderer: {fileID: 6630534306689895973}
   ornamentRenderer: {fileID: 2468611096888875028}
