@@ -14,6 +14,13 @@ public class PlayerController : MonoBehaviour
     private SuspectHandler _currentTarget;
     private SuspectHandler _lastHighlightedTarget;
 
+    [Header("Inputs")]
+    [SerializeField] private KeyCode upKey = KeyCode.W;
+    [SerializeField] private KeyCode leftKey = KeyCode.A;
+    [SerializeField] private KeyCode downKey = KeyCode.S;
+    [SerializeField] private KeyCode rightKey = KeyCode.D;
+    [SerializeField] private KeyCode interactKey = KeyCode.Space;
+
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -21,9 +28,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        HandleMovementInput();
-        UpdateInteractionTarget();
-        HandleInteraction();
+        InputHandle_Movement();
+        InputHandle_Interaction();
     }
 
     private void FixedUpdate()
@@ -31,26 +37,26 @@ public class PlayerController : MonoBehaviour
         _rigidbody2D.linearVelocity = _moveDir * MoveSpeed;
     }
 
-    // ================= MOVEMENT =================
+    // ================= INPUT HANDLING =================
 
-    private void HandleMovementInput()
+    private void InputHandle_Movement()
     {
         float moveX = 0f;
         float moveY = 0f;
 
-        if (Input.GetKey(KeyCode.W)) moveY = +1f;
-        if (Input.GetKey(KeyCode.S)) moveY = -1f;
-        if (Input.GetKey(KeyCode.A)) moveX = -1f;
-        if (Input.GetKey(KeyCode.D)) moveX = +1f;
+        if (Input.GetKey(upKey)) moveY = +1f;
+        if (Input.GetKey(downKey)) moveY = -1f;
+        if (Input.GetKey(leftKey)) moveX = -1f;
+        if (Input.GetKey(rightKey)) moveX = +1f;
 
         _moveDir = new Vector3(moveX, moveY).normalized;
     }
 
-    // ================= INTERACTION =================
-
-    private void HandleInteraction()
+    private void InputHandle_Interaction()
     {
-        if (Input.GetKey(KeyCode.Space))
+        UpdateInteractionTarget();
+
+        if (Input.GetKey(interactKey))
         {
             if (_currentTarget == null)
             {
@@ -72,7 +78,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(interactKey))
         {
             ResetInteraction();
         }
