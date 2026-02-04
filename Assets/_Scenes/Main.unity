@@ -4888,12 +4888,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -100
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 5641825098497565336, guid: 59c35d7f8858cb86988d2c147fb6a2a2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 59c35d7f8858cb86988d2c147fb6a2a2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 57.6, y: 10.799999}
+  m_Size: {x: 57.6, y: 10.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -4952,7 +4952,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 57.6, y: 10.8}
-    newSize: {x: 57.6, y: 10.799999}
+    newSize: {x: 57.6, y: 10.8}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -5561,7 +5561,7 @@ SpriteRenderer:
   m_Size: {x: 57.6, y: 10.799999}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1808623507
 GameObject:
@@ -6149,7 +6149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5753997088940296775, guid: cb8d947fe1db3c24ebb3fe9f15bee209, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.65
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 5753997088940296775, guid: cb8d947fe1db3c24ebb3fe9f15bee209, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6210,11 +6210,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3898964847738199202, guid: cb817b903f0425b45a0730b0bca57f5e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.8
+      value: -17.98
       objectReference: {fileID: 0}
     - target: {fileID: 3898964847738199202, guid: cb817b903f0425b45a0730b0bca57f5e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.08
+      value: -0.8
       objectReference: {fileID: 0}
     - target: {fileID: 3898964847738199202, guid: cb817b903f0425b45a0730b0bca57f5e, type: 3}
       propertyPath: m_LocalPosition.z

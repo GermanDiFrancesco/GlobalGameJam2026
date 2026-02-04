@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: a529f90ebfb9d8241b6988a400d3a0ee
+guid: 59c35d7f8858cb86988d2c147fb6a2a2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7841061174684489159
-    second: GGJ26 CARROZA_0
-  - first:
-      213: -5853057790129633368
-    second: GGJ26 CARROZA_1
+      213: 5641825098497565336
+    second: 0. GGJ26 - LA REPU_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -75,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -103,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GGJ26 CARROZA_0
+      name: 0. GGJ26 - LA REPU_0
       rect:
         serializedVersion: 2
-        x: 127
-        y: 239
-        width: 584
-        height: 460
+        x: 0
+        y: 0
+        width: 5760
+        height: 1080
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,30 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 93ae2d4c764fe2390800000000000000
-      internalID: -7841061174684489159
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GGJ26 CARROZA_1
-      rect:
-        serializedVersion: 2
-        x: 550
-        y: 236
-        width: 71
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8a78d7163f2c5cea0800000000000000
-      internalID: -5853057790129633368
+      spriteID: 892a4d0190acb4e40800000000000000
+      internalID: 5641825098497565336
       vertices: []
       indices: 
       edges: []
@@ -150,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -160,8 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      GGJ26 CARROZA_0: -7841061174684489159
-      GGJ26 CARROZA_1: -5853057790129633368
+      0. GGJ26 - LA REPU_0: 5641825098497565336
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
