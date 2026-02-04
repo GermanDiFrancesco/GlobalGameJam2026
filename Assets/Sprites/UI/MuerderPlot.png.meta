@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f1e8f6ebe5472c94d84e6b5c5adab76a
+guid: 60a4758f4769ac3409c04e144aa475f9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3177994827998810356
-    second: Button_Menu_2_0
+      213: -5368771442379321255
+    second: MuerderPlot_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Button_Menu_2_0
+      name: MuerderPlot_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 766
-        height: 192
+        width: 8844
+        height: 6989
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c0f2a1baa8e75e3d0800000000000000
-      internalID: -3177994827998810356
+      spriteID: 95018b071da4e75b0800000000000000
+      internalID: -5368771442379321255
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Button_Menu_2_0: -3177994827998810356
+      MuerderPlot_0: -5368771442379321255
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
