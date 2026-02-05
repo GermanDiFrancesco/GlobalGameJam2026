@@ -52,8 +52,9 @@ MonoBehaviour:
   MoveSpeed: 3.5
   InteractHoldTime: 1
   InteractRadius: 1.25
+  frameInterval: 0.2
   movementThreshold: 0.05
-  swapInterval: 0.2
+  directionThreshold: 0.01
   legsRenderer: {fileID: 5342625289741079009}
   idleSprite: {fileID: 21300000, guid: 88b832687c6546d4ca5b73badcee641f, type: 3}
   walkSprite: {fileID: 21300000, guid: af79ec8e0dc0d554c883610e2bd3e5d6, type: 3}
@@ -239,7 +240,7 @@ Transform:
   m_GameObject: {fileID: 5816097840783051531}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.183, z: 0}
   m_LocalScale: {x: 0.88203305, y: 0.88203305, z: 0.88203305}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -279,8 +280,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.21585242}
-  m_Size: {x: 0.6702926, y: 0.9540642}
+  m_Offset: {x: 0, y: -0.3577382}
+  m_Size: {x: 0.6702926, y: 0.6702926}
   m_Direction: 0
 --- !u!1 &6145675675834409223
 GameObject:

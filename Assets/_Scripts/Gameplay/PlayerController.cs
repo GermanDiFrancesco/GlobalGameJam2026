@@ -39,7 +39,11 @@ public class PlayerController : MonoBehaviour
     {
         InputHandle_Movement();
         InputHandle_Interaction();
+        HandleWalkAnimation();
+    }
 
+    private void HandleWalkAnimation()
+    {
         if (rb == null || legsRenderer == null)
             return;
 
@@ -53,16 +57,6 @@ public class PlayerController : MonoBehaviour
         {
             SetIdle();
         }
-    }
-    private void HandleFlip()
-    {
-        float vx = rb.linearVelocity.x;
-
-        if (Mathf.Abs(vx) < directionThreshold)
-            return;
-
-        // Convención: mirando a la derecha = flipX false
-        legsRenderer.flipX = vx < 0f;
     }
 
     private void AnimateWalk()
@@ -87,7 +81,7 @@ public class PlayerController : MonoBehaviour
     }
     private void HandleDirectionFlip()
     {
-        float vx = rb.velocity.x;
+        float vx = rb.linearVelocity.x;
 
         if (Mathf.Abs(vx) < directionThreshold)
             return;

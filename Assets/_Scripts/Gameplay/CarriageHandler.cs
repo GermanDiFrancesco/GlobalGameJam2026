@@ -20,11 +20,6 @@ public class CarriageHandler : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
     }
-    
-    private void Start()
-    {
-        StartMovement();
-    } 
 
     public void StartMovement()
     {
@@ -39,7 +34,8 @@ public class CarriageHandler : MonoBehaviour
         
         timer = 0f;
         isMoving = true;
-        rb.position = worldStartPosition;    }
+        rb.position = worldStartPosition;
+    }
 
     private void FixedUpdate()
     {

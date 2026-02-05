@@ -62,6 +62,9 @@ public class GameController : MonoBehaviour
     [Header("Game Config")]
     [SerializeField] private ClueDifficultyConfig difficulty;
 
+    [Header("Dependencies")]
+    [SerializeField] private CameraFollowPlayer cameraFollowPlayer;
+
     [Header("NPCs")]
     [SerializeField] private MaskIdentity killerIdentity;
     [SerializeField] List<MaskIdentity> npcIdentities = new List<MaskIdentity>();
@@ -91,20 +94,18 @@ public class GameController : MonoBehaviour
     public void StartTutorial()
     {        
         SpawnSuspects(npcCount);
+        GenerateAllClues();
+        cameraFollowPlayer.SetTutorialBounds();
+        //_musicManager.SetMusicTrack();
     }
     public void StartGame()
     {
-        GenerateAllClues();
         AssignCluesToWitnesses();
         SetupTimer();
+        cameraFollowPlayer.SetGameplayBounds();
         if (carriage != null) carriage.StartMovement();
         else Debug.LogWarning("Carriage no está asignado en UIManager!");
         //_musicManager.SetMusicTrack();
-    }
-
-    private void Start()
-    {
-
     }
     
     private void SetupTimer()

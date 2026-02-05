@@ -197,7 +197,7 @@ public class SuspectHandler : MonoBehaviour
 
     private void HandleDirectionFlip()
     {
-        float vx = rb.velocity.x;
+        float vx = rb.linearVelocity.x;
 
         if (Mathf.Abs(vx) < directionThreshold)
             return;
