@@ -49,9 +49,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34034d5a3b53d99a2b776ec0a3c0fc41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  MoveSpeed: 20
+  MoveSpeed: 3.5
   InteractHoldTime: 1
   InteractRadius: 1.25
+  movementThreshold: 0.05
+  swapInterval: 0.2
+  legsRenderer: {fileID: 5342625289741079009}
+  idleSprite: {fileID: 21300000, guid: 88b832687c6546d4ca5b73badcee641f, type: 3}
+  walkSprite: {fileID: 21300000, guid: af79ec8e0dc0d554c883610e2bd3e5d6, type: 3}
   upKey: 119
   leftKey: 97
   downKey: 115
@@ -82,7 +87,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!1 &1004565204476537681
 GameObject:

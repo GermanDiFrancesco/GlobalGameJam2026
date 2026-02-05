@@ -40,7 +40,17 @@ public class SuspectHandler : MonoBehaviour
     private const float MinIdleTime = 3f;
     private const float MaxMoveTime = 6f;
 
-    private Rigidbody2D _rigidbody2D;
+    [Header("Walk Animation")]
+    [SerializeField] private float frameInterval = 0.2f;
+    [SerializeField] private float movementThreshold = 0.05f;
+    [SerializeField] private float directionThreshold = 0.01f;
+    [SerializeField] private SpriteRenderer legsRenderer;
+    [SerializeField] private Sprite idleSprite;
+    [SerializeField] private Sprite walkSprite;
+    private float timer;
+    private bool mirroredStep;
+
+    private Rigidbody2D rb;
     private Vector2 _spawnPosition;
     private Vector2 _moveDir;
     private enum NPCState { Idle, Moving }
@@ -147,13 +157,65 @@ public class SuspectHandler : MonoBehaviour
         }
     }
 
+    private void HandleWalkAnimation()
+    {
+        if (rb == null || legsRenderer == null)
+            return;
+
+        HandleDirectionFlip();
+
+        if (rb.linearVelocity.magnitude > movementThreshold)
+        {
+            AnimateWalk();
+        }
+        else
+        {
+            SetIdle();
+        }
+    }
+
+    private void AnimateWalk()
+    {
+        timer += Time.deltaTime;
+
+        if (timer >= frameInterval)
+        {
+            timer = 0f;
+            mirroredStep = !mirroredStep;
+
+            legsRenderer.sprite = walkSprite;
+            legsRenderer.flipX = mirroredStep ? !legsRenderer.flipX : legsRenderer.flipX;
+        }
+    }
+
+    private void SetIdle()
+    {
+        timer = 0f;
+        mirroredStep = false;
+        legsRenderer.sprite = idleSprite;
+    }
+
+    private void HandleDirectionFlip()
+    {
+        float vx = rb.velocity.x;
+
+        if (Mathf.Abs(vx) < directionThreshold)
+            return;
+
+        // Dirección base (mirar izquierda/derecha)
+        bool facingLeft = vx < 0f;
+
+        // Importante: el flip de dirección es la base
+        legsRenderer.flipX = facingLeft ^ mirroredStep;
+    }
+
     #endregion
 
     #region Movement
 
     private void Awake()
     {
-        _rigidbody2D = GetComponentInChildren<Rigidbody2D>();
+        rb = GetComponentInChildren<Rigidbody2D>();
         _spawnPosition = transform.position;
     }
     private void Start()
@@ -164,9 +226,14 @@ public class SuspectHandler : MonoBehaviour
         if (isWitness) StartCoroutine(DelayedWitnessing(delayWitnessing));
     }
 
+    private void Update()
+    {
+        HandleWalkAnimation();
+    }
+
     private void FixedUpdate()
     {
-        _rigidbody2D.linearVelocity = _moveDir * moveSpeed;
+        rb.linearVelocity = _moveDir * moveSpeed;
     }
 
     private IEnumerator StateMachine()

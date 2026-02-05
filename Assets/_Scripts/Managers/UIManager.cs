@@ -1,26 +1,15 @@
 using UnityEngine;
+using System.Collections;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 
 public class UIManager : MonoBehaviour
 {
-    #region Dependencies
     [Header("Dependencies")]
     [SerializeField] private GameController gameController;
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private GameObject musicManager;
-    #endregion
-
-    [Header("Sound Clips")]
-    [SerializeField] private AudioClip winAudio;
-    [SerializeField] private AudioClip loseAudio;
-
-    [Header("Carriage")]
-    [SerializeField] private CarriageHandler carriage;
-    
-    #region UI Elements
-    [Header("Buttons")]
-    [SerializeField] private Button comenzarButton;
 
     [Header("Clock Settings")]
     [SerializeField] private float _gameTimeInSeconds = 120f;
@@ -34,11 +23,20 @@ public class UIManager : MonoBehaviour
 
     [Header("UI Screens")]
     [SerializeField] private GameObject menuScreen;
+    [SerializeField] private GameObject scoreScreen;
+    [SerializeField] private GameObject creditsScreen;
+    [SerializeField] private GameObject hudScreen;
     [SerializeField] private GameObject winScreen;
     [SerializeField] private GameObject loseScreen;
-    #endregion
 
-    #region Timer
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip winAudio;
+    [SerializeField] private AudioClip loseAudio;
+
+    [Header("Inputs")]
+    [SerializeField] private KeyCode interactKey = KeyCode.Space;
+    [SerializeField] private KeyCode pauseKey = KeyCode.Escape;
+
     [Header("Timer")]
     [SerializeField] private Text _timerText;
     
@@ -47,11 +45,16 @@ public class UIManager : MonoBehaviour
     private bool _isTimerRunning;
     
     public event Action OnMidnightReached;
-    #endregion
 
     #region Unity Callbacks
+
+    private void Awake() => Time.timeScale = 0f;
+
     private void Update()
     {
+        if (Input.GetKeyDown(interactKey)) ButtonPressed_Play();
+        if (Input.GetKeyDown(pauseKey)) ShowScreen("Menu");
+
         if (!_isTimerRunning) return;
         
         _currentTime -= Time.deltaTime;
@@ -67,6 +70,99 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
+    #region Screen Management
+    public void ShowScreen(string screenName)
+    {
+        Time.timeScale = 0f;
+        HideAllScreens();
+        switch (screenName)
+        {
+            case "Menu":
+                menuScreen?.SetActive(true);
+                break;
+            case "Score":
+                scoreScreen?.SetActive(true);
+                Debug.Log("Score Screen");
+                break;
+            case "Credits":
+                creditsScreen?.SetActive(true);
+                Debug.Log("Credits Screen");
+                break;
+
+            case "Tutorial":
+                Time.timeScale = 1f;
+                gameController.StartTutorial();
+                Debug.Log("Tutorial iniciado");
+                break;
+            case "Game":
+                Time.timeScale = 1f;
+                hudScreen?.SetActive(true);
+                StartTimer();
+                break;
+
+            case "Win":
+                winScreen?.SetActive(true);
+                SoundManager.PlaySoundAndDestroy(winAudio);
+                //Destroy(musicManager);
+                break;
+            case "Lose":
+                loseScreen?.SetActive(true);
+                SoundManager.PlaySoundAndDestroy(loseAudio);
+                //Destroy(musicManager);                    
+                break;
+
+            default:
+                Debug.LogWarning("Nombre de pantalla no reconocido: " + screenName);
+                break;
+        }
+    }
+    public void HideAllScreens()
+    {
+        Time.timeScale = 0f;
+        menuScreen?.SetActive(false);
+        winScreen?.SetActive(false);
+        loseScreen?.SetActive(false);
+        creditsScreen?.SetActive(false);
+        scoreScreen?.SetActive(false);
+    }
+
+    #endregion
+
+    #region Button Press
+
+    public void ButtonPressed_Play() => StartCoroutine(DelayedButtonPressed_Play());
+    private IEnumerator DelayedButtonPressed_Play()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        ShowScreen("Tutorial");
+    }
+    public void ButtonPressed_Score() => StartCoroutine(DelayedButtonPressed_Score());
+    private IEnumerator DelayedButtonPressed_Score()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        ShowScreen("Score");
+    }
+    public void ButtonPressed_Credits() => StartCoroutine(DelayedButtonPressed_Credits());
+    private IEnumerator DelayedButtonPressed_Credits()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        ShowScreen("Credits");
+    }
+    public void ButtonPressed_Exit() => StartCoroutine(DelayedButtonPressed_Exit());
+    private IEnumerator DelayedButtonPressed_Exit()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        Application.Quit();
+    }
+    public void ButtonPressed_Return() => StartCoroutine(DelayedButtonPressed_Return());
+    private IEnumerator DelayedButtonPressed_Return()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        ShowScreen("Menu");
+    }
+
+    #endregion
+
     #region Timer Methods
     public void StartTimer()
     {
@@ -74,40 +170,39 @@ public class UIManager : MonoBehaviour
         _isTimerRunning = true;
         UpdateClockDisplay();
     }
-    
+
     public void PauseTimer()
     {
         _isTimerRunning = false;
     }
-    
+
     public void ResetTimer()
     {
         _currentTime = _gameTimeInSeconds;
         _isTimerRunning = false;
         UpdateClockDisplay();
     }
-    
     private void UpdateClockDisplay()
     {
         // Calcular cuánto tiempo ha pasado desde el inicio
         float elapsedTime = _gameTimeInSeconds - _currentTime;
         int elapsedSeconds = Mathf.FloorToInt(elapsedTime);
-    
+
         // Calcular la hora actual del "reloj"
         int totalStartTimeInSeconds = (_startHour * 3600) + (_startMinute * 60);
         int currentClockTimeInSeconds = totalStartTimeInSeconds + elapsedSeconds;
-    
+
         // Si se pasa de medianoche (86400 segundos = 24 horas), hacer wrap
         currentClockTimeInSeconds = currentClockTimeInSeconds % 86400;
-    
+
         // Convertir de vuelta a horas, minutos y segundos
         int displayHour = (currentClockTimeInSeconds / 3600) % 24;
         int displayMinute = (currentClockTimeInSeconds % 3600) / 60;
         int displaySecond = currentClockTimeInSeconds % 60;
-        
+
         // Formato 24 horas: "23:58:45"
         _timerText.text = $"{displayHour:00}:{displayMinute:00}:{displaySecond:00}";
-        
+
         // Cambiar color según se acerca a medianoche
         if (_currentTime <= 10f)
         {
@@ -121,61 +216,7 @@ public class UIManager : MonoBehaviour
         {
             _timerText.color = Color.white;
         }
-        
-    }
-    #endregion
 
-    #region Screen Management
-    public void ShowScreen(string screenName)
-    {
-        HideAllScreens();
-        switch (screenName)
-        {
-            case "Menu":
-                menuScreen?.SetActive(true);
-                break;
-            case "Win":
-                winScreen?.SetActive(true);
-                SoundManager.PlaySoundAndDestroy(winAudio);
-                Destroy(musicManager);
-                break;
-            case "Lose":
-                loseScreen?.SetActive(true);
-                SoundManager.PlaySoundAndDestroy(loseAudio);
-                Destroy(musicManager);                    
-                break;
-            default:
-                Debug.LogWarning("Nombre de pantalla no reconocido: " + screenName);
-                break;
-        }
-    }
-    public void HideAllScreens()
-    {
-        menuScreen?.SetActive(false);
-        winScreen?.SetActive(false);
-        loseScreen?.SetActive(false);
-        Time.timeScale = 0f;
-    }
-    
-    public void OnStartGameButtonPressed()
-    {
-        gameController.Reset();
-        HideAllScreens();
-        
-        Time.timeScale = 1f;
-        StartTimer();
-        
-        // Iniciar la carroza
-        if (carriage != null)
-        {
-            carriage.StartMovement();
-        }
-        else
-        {
-            Debug.LogWarning("Carriage no está asignado en UIManager!");
-        } 
-        
-        Debug.Log("Juego iniciado.");        
     }
     #endregion
 
@@ -205,4 +246,6 @@ public class UIManager : MonoBehaviour
     }
 
     #endregion
+
+
 }

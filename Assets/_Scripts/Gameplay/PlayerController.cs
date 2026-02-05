@@ -6,13 +6,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float MoveSpeed = 20f;
     [SerializeField] private float InteractHoldTime = 1f;
     [SerializeField] private float InteractRadius = 1.25f;
-
-    private Rigidbody2D _rigidbody2D;
+    private Rigidbody2D rb;
     private Vector3 _moveDir;
 
-    private float _interactTimer;
-    private SuspectHandler _currentTarget;
-    private SuspectHandler _lastHighlightedTarget;
+    [Header("Walk Animation")]
+    [SerializeField] private float frameInterval = 0.2f;
+    [SerializeField] private float movementThreshold = 0.05f;
+    [SerializeField] private float directionThreshold = 0.01f;
+    [SerializeField] private SpriteRenderer legsRenderer;
+    [SerializeField] private Sprite idleSprite;
+    [SerializeField] private Sprite walkSprite;
+    private float timer;
+    private bool mirroredStep;
 
     [Header("Inputs")]
     [SerializeField] private KeyCode upKey = KeyCode.W;
@@ -20,21 +25,83 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyCode downKey = KeyCode.S;
     [SerializeField] private KeyCode rightKey = KeyCode.D;
     [SerializeField] private KeyCode interactKey = KeyCode.Space;
+    
+    private float _interactTimer;
+    private SuspectHandler _currentTarget;
+    private SuspectHandler _lastHighlightedTarget;
 
     private void Awake()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
         InputHandle_Movement();
         InputHandle_Interaction();
+
+        if (rb == null || legsRenderer == null)
+            return;
+
+        HandleDirectionFlip();
+
+        if (rb.linearVelocity.magnitude > movementThreshold)
+        {
+            AnimateWalk();
+        }
+        else
+        {
+            SetIdle();
+        }
+    }
+    private void HandleFlip()
+    {
+        float vx = rb.linearVelocity.x;
+
+        if (Mathf.Abs(vx) < directionThreshold)
+            return;
+
+        // Convención: mirando a la derecha = flipX false
+        legsRenderer.flipX = vx < 0f;
+    }
+
+    private void AnimateWalk()
+    {
+        timer += Time.deltaTime;
+
+        if (timer >= frameInterval)
+        {
+            timer = 0f;
+            mirroredStep = !mirroredStep;
+
+            legsRenderer.sprite = walkSprite;
+            legsRenderer.flipX = mirroredStep ? !legsRenderer.flipX : legsRenderer.flipX;
+        }
+    }
+
+    private void SetIdle()
+    {
+        timer = 0f;
+        mirroredStep = false;
+        legsRenderer.sprite = idleSprite;
+    }
+    private void HandleDirectionFlip()
+    {
+        float vx = rb.velocity.x;
+
+        if (Mathf.Abs(vx) < directionThreshold)
+            return;
+
+        // Dirección base (mirar izquierda/derecha)
+        bool facingLeft = vx < 0f;
+
+        // Importante: el flip de dirección es la base
+        legsRenderer.flipX = facingLeft ^ mirroredStep;
     }
 
     private void FixedUpdate()
     {
-        _rigidbody2D.linearVelocity = _moveDir * MoveSpeed;
+        rb.linearVelocity = _moveDir * MoveSpeed;
     }
 
     // ================= INPUT HANDLING =================

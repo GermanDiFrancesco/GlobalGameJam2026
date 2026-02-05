@@ -26,6 +26,7 @@ public struct MaskPartId
 public class MaskIdentity
 {
     public Dictionary<MaskPartType, int> parts;
+    #region Debug
     public string ToDebugString()
     {
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -41,6 +42,7 @@ public class MaskIdentity
 
         return sb.ToString();
     }
+    #endregion   
 }
 
 [System.Serializable]
@@ -82,23 +84,27 @@ public class GameController : MonoBehaviour
     [Header("UI")]
     [SerializeField] private UIManager _uiManager;
     [SerializeField] private MusicManager _musicManager;
-    //TODO: [SerializeField] private Track _musicTrack;
 
-    private void Start()
-    {
-        initGame();
-    }
-    public void Reset()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-    public void initGame()
-    {
+    [Header("Carriage")]
+    [SerializeField] private CarriageHandler carriage;
+
+    public void StartTutorial()
+    {        
         SpawnSuspects(npcCount);
+    }
+    public void StartGame()
+    {
         GenerateAllClues();
         AssignCluesToWitnesses();
         SetupTimer();
+        if (carriage != null) carriage.StartMovement();
+        else Debug.LogWarning("Carriage no está asignado en UIManager!");
         //_musicManager.SetMusicTrack();
+    }
+
+    private void Start()
+    {
+
     }
     
     private void SetupTimer()
