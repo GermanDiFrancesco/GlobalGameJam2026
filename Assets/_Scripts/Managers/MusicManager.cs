@@ -38,10 +38,11 @@ public class MusicManager : MonoBehaviour
         audioSource.playOnAwake = false;
     }
 
-    // =========================
-    // PUBLIC API
-    // =========================
-
+    public void FirstEnterMenu()
+    {
+        currentState = MusicState.Menu;
+        audioSource.Play();
+    }
     public void EnterMenu()
     {
         if (audioSource.isPlaying)

@@ -52,7 +52,12 @@ public class UIManager : MonoBehaviour
 
     #region Unity Callbacks
 
-    private void Start() => ShowScreen("Menu");
+    private void Start()
+    {
+        ShowScreen("Menu");
+        musicManager.FirstEnterMenu();
+    }
+
 
     private void Update()
     {
