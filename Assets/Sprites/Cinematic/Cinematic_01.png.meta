@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0a85c5affda53934fa4e773714866e78
+guid: a8e872b6616294e4cbdc72b26a8e21cf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3556570672397471856
-    second: GGJ26 - TUTORIAL_0
+      213: -4980761855961528845
+    second: Cinematic_01_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GGJ26 - TUTORIAL_0
+      name: Cinematic_01_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 070d2dade2a7b5130800000000000000
-      internalID: 3556570672397471856
+      spriteID: 3f509903b77c0eab0800000000000000
+      internalID: -4980761855961528845
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      GGJ26 - TUTORIAL_0: 3556570672397471856
+      Cinematic_01_0: -4980761855961528845
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

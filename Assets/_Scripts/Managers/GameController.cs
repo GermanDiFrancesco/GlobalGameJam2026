@@ -163,7 +163,7 @@ public class GameController : MonoBehaviour
     }
     private void DebugIdentities()
     {
-        Debug.Log($"KILLER → {killerIdentity.ToDebugString()}");
+        //Debug.Log($"KILLER → {killerIdentity.ToDebugString()}");
 
         /*
         for (int i = 0; i < npcIdentities.Count; i++)
@@ -318,6 +318,10 @@ public class GameController : MonoBehaviour
             OnPlayerWin();
         else
             OnPlayerLose();
+    }
+    public void OnPlayerAskPorter()
+    {
+        Debug.Log("SLIDES");
     }
 
     private void OnPlayerWin()

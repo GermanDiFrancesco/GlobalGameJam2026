@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameController gameController;
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private GameObject musicManager;
+    [SerializeField] private CinematicHandler cinematicHandler;
 
     [Header("Clock Settings")]
     [SerializeField] private float _gameTimeInSeconds = 120f;
@@ -26,6 +27,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject scoreScreen;
     [SerializeField] private GameObject creditsScreen;
     [SerializeField] private GameObject hudScreen;
+    [SerializeField] private GameObject tutorialScreen;
     [SerializeField] private GameObject winScreen;
     [SerializeField] private GameObject loseScreen;
 
@@ -48,7 +50,7 @@ public class UIManager : MonoBehaviour
 
     #region Unity Callbacks
 
-    private void Awake() => Time.timeScale = 0f;
+    private void Awake() => ShowScreen("Menu");
 
     private void Update()
     {
@@ -92,6 +94,8 @@ public class UIManager : MonoBehaviour
             case "Tutorial":
                 Time.timeScale = 1f;
                 gameController.StartTutorial();
+                tutorialScreen?.SetActive(true);
+                cinematicHandler.Play();
                 Debug.Log("Tutorial iniciado");
                 break;
             case "Game":
@@ -124,6 +128,8 @@ public class UIManager : MonoBehaviour
         loseScreen?.SetActive(false);
         creditsScreen?.SetActive(false);
         scoreScreen?.SetActive(false);
+        tutorialScreen?.SetActive(false);
+        hudScreen?.SetActive(false);
     }
 
     #endregion
