@@ -34,6 +34,8 @@ public class UIManager : MonoBehaviour
     [Header("Audio Clips")]
     [SerializeField] private AudioClip winAudio;
     [SerializeField] private AudioClip loseAudio;
+    [SerializeField] private AudioClip buttonAudio;
+    [SerializeField] private AudioClip buttonReversedAudio;
 
     [Header("Inputs")]
     [SerializeField] private KeyCode interactKey = KeyCode.Space;
@@ -139,30 +141,35 @@ public class UIManager : MonoBehaviour
     public void ButtonPressed_Play() => StartCoroutine(DelayedButtonPressed_Play());
     private IEnumerator DelayedButtonPressed_Play()
     {
+        SoundManager.PlaySoundAndDestroy(buttonAudio);
         yield return new WaitForSecondsRealtime(1f);
         ShowScreen("Tutorial");
     }
     public void ButtonPressed_Score() => StartCoroutine(DelayedButtonPressed_Score());
     private IEnumerator DelayedButtonPressed_Score()
     {
+        SoundManager.PlaySoundAndDestroy(buttonAudio);
         yield return new WaitForSecondsRealtime(1f);
         ShowScreen("Score");
     }
     public void ButtonPressed_Credits() => StartCoroutine(DelayedButtonPressed_Credits());
     private IEnumerator DelayedButtonPressed_Credits()
     {
+        SoundManager.PlaySoundAndDestroy(buttonAudio);
         yield return new WaitForSecondsRealtime(1f);
         ShowScreen("Credits");
     }
     public void ButtonPressed_Exit() => StartCoroutine(DelayedButtonPressed_Exit());
     private IEnumerator DelayedButtonPressed_Exit()
     {
+        SoundManager.PlaySoundAndDestroy(buttonReversedAudio);
         yield return new WaitForSecondsRealtime(1f);
         Application.Quit();
     }
     public void ButtonPressed_Return() => StartCoroutine(DelayedButtonPressed_Return());
     private IEnumerator DelayedButtonPressed_Return()
     {
+        SoundManager.PlaySoundAndDestroy(buttonReversedAudio);
         yield return new WaitForSecondsRealtime(1f);
         ShowScreen("Menu");
     }

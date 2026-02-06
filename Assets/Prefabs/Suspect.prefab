@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1845951360049151624}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Indicators
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7387377499696080695}
   - component: {fileID: 8393051879306010979}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Legs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5245818453596265843}
   - component: {fileID: 8819452925191738905}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2792914372021925644}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Interrogate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 1705549518197526930}
   - component: {fileID: 4316057909708621404}
   - component: {fileID: 7491419186055696227}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Indicator_Accuse_Radial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1621775070016715893}
   - component: {fileID: 6630534306689895973}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 2771496096741136304}
   - component: {fileID: 394540172431155660}
   - component: {fileID: 6857790163527618835}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -514,7 +514,7 @@ GameObject:
   - component: {fileID: 6266370624883091804}
   - component: {fileID: 2812217842134051504}
   - component: {fileID: 2668933815357287262}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Indicator_Accuse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -588,7 +588,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5826696288497148580}
   - component: {fileID: 2241064567456292358}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpeechBubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -679,7 +679,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6193359543293787016}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Accuse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -717,7 +717,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7980700936825763351}
   - component: {fileID: 7263755548266984390}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -809,7 +809,7 @@ GameObject:
   - component: {fileID: 461348542124708857}
   - component: {fileID: 1642142162984432366}
   - component: {fileID: 8784736676052127913}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Clue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -884,7 +884,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5794286620705282935}
   - component: {fileID: 8249720793261134613}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Template
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -975,7 +975,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7469389741494679556}
   - component: {fileID: 3111374744475457979}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: InteractionIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1068,7 +1068,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4021937078732587293}
   - component: {fileID: 444233615372413245}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1160,7 +1160,7 @@ GameObject:
   - component: {fileID: 6665889955912751255}
   - component: {fileID: 3601373525988628413}
   - component: {fileID: 5449942804520660312}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Indicator_Interrogate_Radial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1233,7 +1233,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1819022841602958760}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BodyContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1267,7 +1267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3649988182008332821}
   - component: {fileID: 8306164110437639549}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1359,7 +1359,7 @@ GameObject:
   - component: {fileID: 5259013962308857581}
   - component: {fileID: 2884854270977552298}
   - component: {fileID: 6099294322376711649}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Clue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1433,7 +1433,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6139110908124137124}
   - component: {fileID: 2206744112511877346}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Accuse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1524,7 +1524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1495139365101476879}
   - component: {fileID: 5669946680397903284}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Interrogate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1616,7 +1616,7 @@ GameObject:
   - component: {fileID: 8222316790636503132}
   - component: {fileID: 5736473420423826364}
   - component: {fileID: 410019254940728198}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Suspect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1725,7 +1725,7 @@ GameObject:
   - component: {fileID: 5191520901182096436}
   - component: {fileID: 6258535586039679240}
   - component: {fileID: 4860301770059003595}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Indicator_Interrogate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1798,7 +1798,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3309972104756595646}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MaskContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1834,7 +1834,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4074300281688930487}
   - component: {fileID: 5303670303802682482}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ClueSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1924,7 +1924,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3281402774474264938}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1958,7 +1958,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1819090861572909924}
   - component: {fileID: 2468611096888875028}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ornament
   m_TagString: Untagged
   m_Icon: {fileID: 0}
