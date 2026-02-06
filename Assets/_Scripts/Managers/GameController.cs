@@ -61,6 +61,7 @@ public class GameController : MonoBehaviour
 {
     [Header("Game Config")]
     [SerializeField] private ClueDifficultyConfig difficulty;
+    [SerializeField] private int npcCount = 60;
 
     [Header("Dependencies")]
     [SerializeField] private CameraFollowPlayer cameraFollowPlayer;
@@ -71,7 +72,6 @@ public class GameController : MonoBehaviour
 
     [Header("NPCs Generation")]
     [SerializeField] private GameObject suspectPrefab;
-    [SerializeField] private int npcCount = 100;
     [SerializeField] private float npcSpacing = 1.5f;
     [SerializeField] private Collider2D spawnAreaCollider;
     private List<SuspectHandler> spawnedSuspects = new List<SuspectHandler>();
@@ -86,16 +86,22 @@ public class GameController : MonoBehaviour
     [FormerlySerializedAs("_timerUI")]
     [Header("UI")]
     [SerializeField] private UIManager _uiManager;
-    [SerializeField] private MusicManager _musicManager;
+    [SerializeField] private MusicManager musicManager;
 
     [Header("Carriage")]
     [SerializeField] private CarriageHandler carriage;
+    
+    [Header("Tutorial")]
+    [SerializeField] private PorterHandler porter;
+    [SerializeField] private CinematicHandler cinematicHandler;
 
     public void StartTutorial()
     {        
         SpawnSuspects(npcCount);
         GenerateAllClues();
         cameraFollowPlayer.SetTutorialBounds();
+        porter.gameObject.SetActive(true);
+        musicManager.EnterGame();//musicManager.EnterTutorial();
         //_musicManager.SetMusicTrack();
     }
     public void StartGame()
@@ -103,6 +109,7 @@ public class GameController : MonoBehaviour
         AssignCluesToWitnesses();
         SetupTimer();
         cameraFollowPlayer.SetGameplayBounds();
+        musicManager.EnterGame();
         if (carriage != null) carriage.StartMovement();
         else Debug.LogWarning("Carriage no está asignado en UIManager!");
         //_musicManager.SetMusicTrack();
@@ -321,7 +328,8 @@ public class GameController : MonoBehaviour
     }
     public void OnPlayerAskPorter()
     {
-        Debug.Log("SLIDES");
+        Debug.Log("Asked Porter");
+        cinematicHandler.Play();
     }
 
     private void OnPlayerWin()

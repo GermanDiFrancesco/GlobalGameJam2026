@@ -27,8 +27,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyCode interactKey = KeyCode.Space;
     
     private float _interactTimer;
-    private SuspectHandler _currentTarget;
-    private SuspectHandler _lastHighlightedTarget;
+    private IInteractable _currentTarget;
+    private IInteractable _lastHighlightedTarget;
 
     private void Awake()
     {
@@ -129,7 +129,8 @@ public class PlayerController : MonoBehaviour
             {
                 _interactTimer += Time.deltaTime;
 
-                // TODO: enviar progreso a UI (_interactTimer / InteractHoldTime)
+                float progress = _interactTimer / InteractHoldTime;
+                _currentTarget.SetInteractionProgress(progress);
 
                 if (_interactTimer >= InteractHoldTime)
                 {
@@ -147,13 +148,16 @@ public class PlayerController : MonoBehaviour
 
     private void ResetInteraction()
     {
-        _interactTimer = 0f;
+        if (_currentTarget != null)
+            _currentTarget.ClearInteractionProgress();
+
         _currentTarget = null;
+        _interactTimer = 0f;
     }
 
     private void UpdateInteractionTarget()
     {
-        SuspectHandler nearby = FindNearbySuspect();
+        IInteractable nearby = FindNearbySuspect();
 
         if (nearby != _lastHighlightedTarget)
         {
@@ -166,7 +170,7 @@ public class PlayerController : MonoBehaviour
             _lastHighlightedTarget = nearby;
         }
     }
-    private SuspectHandler FindNearbySuspect()
+    private IInteractable FindNearbySuspect()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(
             transform.position,
@@ -175,12 +179,13 @@ public class PlayerController : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            SuspectHandler suspect = hit.GetComponentInParent<SuspectHandler>();
+            IInteractable suspect = hit.GetComponentInParent<IInteractable>();
             if (suspect != null)
                 return suspect;
         }
 
         return null;
     }
+
 
 }

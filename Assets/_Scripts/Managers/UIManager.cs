@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private GameController gameController;
     [SerializeField] private SoundManager soundManager;
-    [SerializeField] private GameObject musicManager;
+    [SerializeField] private MusicManager musicManager;
     [SerializeField] private CinematicHandler cinematicHandler;
 
     [Header("Clock Settings")]
@@ -52,11 +52,10 @@ public class UIManager : MonoBehaviour
 
     #region Unity Callbacks
 
-    private void Awake() => ShowScreen("Menu");
+    private void Start() => ShowScreen("Menu");
 
     private void Update()
     {
-        if (Input.GetKeyDown(interactKey)) ButtonPressed_Play();
         if (Input.GetKeyDown(pauseKey)) ShowScreen("Menu");
 
         if (!_isTimerRunning) return;
@@ -83,6 +82,7 @@ public class UIManager : MonoBehaviour
         {
             case "Menu":
                 menuScreen?.SetActive(true);
+                musicManager.EnterMenu();
                 break;
             case "Score":
                 scoreScreen?.SetActive(true);
@@ -97,12 +97,13 @@ public class UIManager : MonoBehaviour
                 Time.timeScale = 1f;
                 gameController.StartTutorial();
                 tutorialScreen?.SetActive(true);
-                cinematicHandler.Play();
+                musicManager.EnterGame();//musicManager.EnterTutorial();
                 Debug.Log("Tutorial iniciado");
                 break;
             case "Game":
                 Time.timeScale = 1f;
                 hudScreen?.SetActive(true);
+                musicManager.EnterGame();
                 StartTimer();
                 break;
 

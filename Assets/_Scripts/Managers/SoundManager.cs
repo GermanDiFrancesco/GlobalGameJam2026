@@ -8,7 +8,6 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance { get; private set; }
 
     [Header("Configuration")]
-    //[SerializeField] private AudioMixerGroup sfxGroup;
     [SerializeField] private Transform parentTransform;
 
     private void Awake()

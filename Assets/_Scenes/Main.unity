@@ -146,8 +146,8 @@ Transform:
   m_GameObject: {fileID: 43396513}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.11103092, w: 0.99381703}
-  m_LocalPosition: {x: -7.3234, y: 0.4888, z: 0}
-  m_LocalScale: {x: 0.80974656, y: 0.88100964, z: 1}
+  m_LocalPosition: {x: -8.2122, y: 1.0646, z: 0}
+  m_LocalScale: {x: 0.44893634, y: 0.46764436, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 565415744}
@@ -997,8 +997,8 @@ Transform:
   m_GameObject: {fileID: 189978207}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.034614194, w: -0.9994008}
-  m_LocalPosition: {x: -7.8496, y: 1.4506, z: 0}
-  m_LocalScale: {x: 1.1016871, y: 3.0051856, z: 1}
+  m_LocalPosition: {x: -8.5039, y: 1.5752, z: 0}
+  m_LocalScale: {x: 0.6107928, y: 1.5951678, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 565415744}
@@ -1651,8 +1651,8 @@ Transform:
   m_GameObject: {fileID: 318460900}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.12930813, w: -0.9916045}
-  m_LocalPosition: {x: -7.5249, y: 1.75, z: 0}
-  m_LocalScale: {x: 0.82782257, y: 2.245174, z: 1}
+  m_LocalPosition: {x: -8.3239, y: 1.7342, z: 0}
+  m_LocalScale: {x: 0.45895797, y: 1.1917498, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 565415744}
@@ -2367,8 +2367,8 @@ Transform:
   m_GameObject: {fileID: 457862156}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.98288375, w: -0.18422717}
-  m_LocalPosition: {x: -8.539, y: 2.3732, z: 0}
-  m_LocalScale: {x: 0.38160077, y: 0.99881583, z: 1}
+  m_LocalPosition: {x: -8.8861, y: 2.065, z: 0}
+  m_LocalScale: {x: 0.21156551, y: 0.5301766, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 565415744}
@@ -3541,7 +3541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   gameController: {fileID: 1867941677}
   soundManager: {fileID: 57282669}
-  musicManager: {fileID: 1456692666}
+  musicManager: {fileID: 1456692669}
   cinematicHandler: {fileID: 1583860915}
   _gameTimeInSeconds: 120
   _startHour: 23
@@ -3559,7 +3559,7 @@ MonoBehaviour:
   winAudio: {fileID: 8300000, guid: f960e847ef9b6664ea3d861004775acf, type: 3}
   loseAudio: {fileID: 8300000, guid: fae23f13d69287a42b7f9b66ffde8460, type: 3}
   buttonAudio: {fileID: 8300000, guid: b8c14ea3d09983fbaaa68bfed1f69eb2, type: 3}
-  buttonReversedAudio: {fileID: 0}
+  buttonReversedAudio: {fileID: 8300000, guid: dc01fecdce86fb745a90d7dba25ac5d6, type: 3}
   interactKey: 32
   pauseKey: 27
   _timerText: {fileID: 863879522}
@@ -6101,6 +6101,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1456692667}
+  - component: {fileID: 1456692669}
   - component: {fileID: 1456692668}
   m_Layer: 0
   m_Name: MusicManager
@@ -6137,7 +6138,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: ac0ce5f648d636bc296c242f03a285e4, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.179
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -6221,6 +6222,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1456692669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456692666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce7e44c85213b9cd93d1c2908b8e4fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicManager
+  menuMusic: {fileID: 8300000, guid: 1abe997db93b64707b394d3e75c225c6, type: 3}
+  tutorialMusic: {fileID: 8300000, guid: 72b5acc9c99d55a009a2e484eb4a381a, type: 3}
+  gameMusic: {fileID: 8300000, guid: ac0ce5f648d636bc296c242f03a285e4, type: 3}
 --- !u!1 &1460670728
 GameObject:
   m_ObjectHideFlags: 0
@@ -6771,8 +6787,8 @@ Transform:
   m_GameObject: {fileID: 1576848815}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.14974955, w: -0.988724}
-  m_LocalPosition: {x: -8.125, y: 1.118, z: 0}
-  m_LocalScale: {x: 0.82782257, y: 2.138355, z: 1}
+  m_LocalPosition: {x: -8.6566, y: 1.3987, z: 0}
+  m_LocalScale: {x: 0.45895797, y: 1.1350497, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 565415744}
@@ -6934,12 +6950,12 @@ MonoBehaviour:
     duration: 3
   - image: {fileID: 4523580911426091268, guid: 42ac5145cce19f04486c7c86edc7d383, type: 3}
     sound: {fileID: 0}
-    duration: 1.5
+    duration: 2
   - image: {fileID: -8103930210074222209, guid: 46975f9eaaae1444fba7b44464256c9a, type: 3}
     sound: {fileID: 0}
     duration: 1
   - image: {fileID: -1004618454885597961, guid: e6b3e7f41f9db9047ba14f6c63ebcab1, type: 3}
-    sound: {fileID: 0}
+    sound: {fileID: 8300000, guid: 00da93e3ec9de2746b997a6c23e9c53f, type: 3}
     duration: 3
   - image: {fileID: 1354095880640421166, guid: c34fceef08410e948aea3bbfb8b8bd98, type: 3}
     sound: {fileID: 8300000, guid: ab7ea47845b3f27489f614049faf11e8, type: 3}
@@ -8640,10 +8656,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameController
   difficulty:
     falseCluesPerPart: 2
+  npcCount: 60
   cameraFollowPlayer: {fileID: 519420033}
   npcIdentities: []
   suspectPrefab: {fileID: 7253405686316034282, guid: a58fecfb73d6f4a4885c6dee56f0fce2, type: 3}
-  npcCount: 75
   npcSpacing: 1.5
   spawnAreaCollider: {fileID: 1805031606}
   clues: []
@@ -8676,8 +8692,10 @@ MonoBehaviour:
     - {fileID: 21300000, guid: e021b6e64e5009c49907960caa7cf844, type: 3}
     - {fileID: 21300000, guid: ded408890a4f50a4991a1de91dd68955, type: 3}
   _uiManager: {fileID: 764922230}
-  _musicManager: {fileID: 0}
+  musicManager: {fileID: 1456692669}
   carriage: {fileID: 2100244119}
+  porter: {fileID: 8222316790355571777}
+  cinematicHandler: {fileID: 1583860915}
 --- !u!1 &1885134014
 GameObject:
   m_ObjectHideFlags: 0
@@ -9021,7 +9039,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &282472102978907096
 GameObject:
   m_ObjectHideFlags: 0
@@ -10241,7 +10259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &7263755547818076122
 SpriteRenderer:
   serializedVersion: 2
@@ -10431,12 +10449,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5199d48b8497e2d4e8b4a3ef36cc3dd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PorterHandler
-  delayWitnessing: 3.5
+  delayCallPlayer: 4
   gameController: {fileID: 1867941677}
-  speechRoot: {fileID: 0}
-  indicatorRoot: {fileID: 0}
-  accuseIndicator: {fileID: 0}
-  interrogateIndicator: {fileID: 0}
+  indicatorRoot: {fileID: 37416221893043393}
+  interrogateIndicator: {fileID: 395598200448243648}
+  interactionFill: {fileID: 5449942804877261124}
 --- !u!212 &8249720793978242825
 SpriteRenderer:
   serializedVersion: 2

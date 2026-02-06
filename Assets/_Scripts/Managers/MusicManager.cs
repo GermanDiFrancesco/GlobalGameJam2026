@@ -1,77 +1,100 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
+public enum MusicState
+{
+    None,
+    Menu,
+    Tutorial,
+    Game
+}
+[RequireComponent(typeof(AudioSource))]
 public class MusicManager : MonoBehaviour
 {
-    [Header("Debug")]
-    [SerializeField] int currentTrackIndex = 0;
+    public static MusicManager Instance;
 
-    [Header("Configuration")]
-    [SerializeField] float startVolume = .5f;
-    [SerializeField] float transitionDuration = 0.25f;
-    [SerializeField] AudioMixerGroup musicGroup;
+    [Header("Music Clips")]
+    [SerializeField] private AudioClip menuMusic;
+    [SerializeField] private AudioClip tutorialMusic;
+    [SerializeField] private AudioClip gameMusic;
 
-    [Header("Music Tracks")]
-    [SerializeField] List<AudioClip> musicTracks;
-    [SerializeField] List<AudioSource> audioSources;
+    private AudioSource audioSource;
+    private MusicState currentState = MusicState.None;
 
-    private void Awake() => SetAudioSources();
-    private void SetAudioSources()
+    private void Awake()
     {
-        audioSources = new List<AudioSource>(GetComponents<AudioSource>());
-        for (int i = 0; i < audioSources.Count; i++)
+        if (Instance != null && Instance != this)
         {
-            audioSources[i].clip = musicTracks[i];
-            audioSources[i].loop = true;
-            audioSources[i].playOnAwake = false;
-            audioSources[i].outputAudioMixerGroup = musicGroup;
-            audioSources[i].volume = (i == currentTrackIndex) ? startVolume : 0f;
-            audioSources[i].Play();
+            Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        audioSource = GetComponent<AudioSource>();
+        audioSource.playOnAwake = false;
     }
 
-    public void SetMusicTrack(string track)
-    {
-        if (track == "Menu") StartCoroutine(TransitionRoutine(0));
-        else if (track == "Game") StartCoroutine(TransitionRoutine(1));
-    }
-    private IEnumerator TransitionRoutine(int newTrackIndex)
-    {
-        float timer = 0f;
-        AudioSource activeSource = audioSources[currentTrackIndex];
-        AudioSource targetSource = audioSources[newTrackIndex];
+    // =========================
+    // PUBLIC API
+    // =========================
 
-        while (timer < transitionDuration)
+    public void EnterMenu()
+    {
+        if (audioSource.isPlaying)
         {
-            timer += Time.deltaTime;
-            float progress = timer / transitionDuration;
-
-            activeSource.volume = Mathf.Lerp(startVolume, 0f, progress);
-            targetSource.volume = Mathf.Lerp(0f, startVolume, progress);
-
-            yield return null;
+            audioSource.Pause();
         }
-        activeSource.volume = 0f;
-        targetSource.volume = startVolume;
-
-        currentTrackIndex = newTrackIndex;
+        currentState = MusicState.Menu;
     }
 
-    public void EnableTenseTrack() => StartCoroutine(FadeTenseTrack(audioSources[2], transitionDuration));
-    public void DisableTenseTrack() => StartCoroutine(FadeTenseTrack(audioSources[2], 0f));
-    private IEnumerator FadeTenseTrack(AudioSource track, float targetVolume)
+    public void EnterTutorial()
     {
-        float startVol = track.volume;
-        float timer = 0f;
-
-        while (timer < transitionDuration)
+        // Si el tutorial ya estaba sonando y estaba pausado → continuar
+        if (currentState == MusicState.Menu && audioSource.clip == tutorialMusic)
         {
-            timer += Time.deltaTime;
-            track.volume = Mathf.Lerp(startVol, targetVolume, timer / transitionDuration);
-            yield return null;
+            audioSource.UnPause();
+            currentState = MusicState.Tutorial;
+            return;
         }
-        track.volume = targetVolume;
+
+        PlayNewClip(tutorialMusic, loop: true);
+        currentState = MusicState.Tutorial;
+    }
+
+    public void EnterGame()
+    {
+        // Si el juego ya estaba sonando y estaba pausado → continuar
+        if (currentState == MusicState.Menu && audioSource.clip == gameMusic)
+        {
+            audioSource.UnPause();
+            currentState = MusicState.Game;
+            return;
+        }
+
+        PlayNewClip(gameMusic, loop: false);
+        currentState = MusicState.Game;
+    }
+
+    public void StopMusic()
+    {
+        audioSource.Stop();
+        audioSource.clip = null;
+        currentState = MusicState.None;
+    }
+
+    // =========================
+    // INTERNAL
+    // =========================
+
+    private void PlayNewClip(AudioClip clip, bool loop)
+    {
+        audioSource.clip = clip;
+        audioSource.loop = loop;
+        audioSource.time = 0f;
+        audioSource.Play();
     }
 }

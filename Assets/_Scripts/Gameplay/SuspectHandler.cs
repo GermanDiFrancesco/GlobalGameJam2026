@@ -1,7 +1,24 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SuspectHandler : MonoBehaviour
+public interface IInteractable
+{
+    void OnInteracted();
+    void SetInteractionIndicator(bool show);
+    void SetInteractionProgress(float normalized); // 0 → 1
+    void ClearInteractionProgress();
+    Transform GetTransform();
+    InteractionType GetInteractionType();
+}
+public enum InteractionType
+{
+    Accuse,
+    Investigate,
+    Cinematic
+}
+
+public class SuspectHandler : MonoBehaviour, IInteractable
 {   
     [Header("Identity")]
     [SerializeField] public bool isKiller;
@@ -24,14 +41,21 @@ public class SuspectHandler : MonoBehaviour
     [SerializeField] private SpriteRenderer hatRenderer;
     [SerializeField] private SpriteRenderer ornamentRenderer;
     [SerializeField] private SpriteRenderer eyesRenderer;
-    [SerializeField] private SpriteRenderer clueRenderer;
+    //[SerializeField] private SpriteRenderer clueRenderer;
     [SerializeField] private SpriteRenderer bodyRenderer;
 
     [Header("Interaction Indicators")]
     [SerializeField] private GameObject speechRoot;
     [SerializeField] private GameObject indicatorRoot;
-    [SerializeField] private GameObject accuseIndicator;
-    [SerializeField] private GameObject interrogateIndicator;
+    [SerializeField] private Image interactionFill; // fill radial worldspace
+    [SerializeField] private Image interaction;
+    [SerializeField] private Image clueImg;
+
+    [Header("Interaction Resources")]
+    [SerializeField] private Sprite interrogateSprite;
+    [SerializeField] private Sprite accuseSprite;
+    [SerializeField] private Color interrogateColor;
+    [SerializeField] private Color accuseColor;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 1.4f;
@@ -56,18 +80,23 @@ public class SuspectHandler : MonoBehaviour
     private enum NPCState { Idle, Moving }
     private NPCState _currentState;
 
-    public void OnInteracted()
+    private void Awake()
     {
-        if (isWitness)
-        {
-            gameController.OnPlayerInvestigate(assignedClue);
-            givedClue = true;
-            indicatorRoot.SetActive(false);
-            speechRoot.SetActive(true);
-            clueRenderer.enabled = true;
-            return;
-        }
-        gameController.OnPlayerAccuse(this);
+        rb = GetComponentInChildren<Rigidbody2D>();
+        _spawnPosition = transform.position;
+    }
+    private void Start()
+    {
+        StartCoroutine(DelayInicial());
+        StartCoroutine(StateMachine());
+    }
+    private void Update()
+    {
+        HandleWalkAnimation();
+    }
+    private void FixedUpdate()
+    {
+        rb.linearVelocity = _moveDir * moveSpeed;
     }
 
     #region Initialization
@@ -88,8 +117,22 @@ public class SuspectHandler : MonoBehaviour
     public void SetAsWitness(Clue clue)
     {
         assignedClue = clue;
-        isWitness = true;        
-        clueRenderer.sprite = clue.sprite;        
+        isWitness = true;
+        clueImg.sprite = clue.sprite;
+        interactionFill.sprite = interrogateSprite;
+        interactionFill.color = interrogateColor;
+        interaction.sprite = interrogateSprite;
+
+        delayWitnessing = Random.Range(3f, 20f);
+        if (isWitness) StartCoroutine(DelayedWitnessing(delayWitnessing));
+    }
+    private IEnumerator DelayedWitnessing(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isWitnessAlready = true;
+        bodyRenderer.sprite = bodyHandsUp;
+        moveSpeed = 0;
+        SetInteractionIndicator(true);
     }
     public void DebugWitness()
     {
@@ -99,7 +142,6 @@ public class SuspectHandler : MonoBehaviour
             $"WITNESS → {assignedClue.part.type}:{assignedClue.part.index}"
         );
     }
-
     public void SetInteractionIndicator(bool show)
     {
         if (!givedClue)
@@ -107,21 +149,35 @@ public class SuspectHandler : MonoBehaviour
             if (!indicatorRoot) return;
             indicatorRoot.SetActive(show);
 
-            interrogateIndicator.SetActive(isWitness);
-            accuseIndicator.SetActive(!isWitness);
-
             if (!show) return;
         }
         //if (isWitnessAlready) indicatorRoot.SetActive(false);
     }
-
-    private IEnumerator DelayedWitnessing(float delay)
+    public void SetInteractionProgress(float normalized)
     {
-        yield return new WaitForSeconds(delay);
-        isWitnessAlready = true;
-        bodyRenderer.sprite = bodyHandsUp;
-        moveSpeed = 0;
-        SetInteractionIndicator(true);
+        if (interactionFill == null) return;
+        interactionFill.fillAmount = Mathf.Clamp01(normalized);
+        interactionFill.enabled = true;
+    }
+    public void ClearInteractionProgress()
+    {
+        if (interactionFill == null) return;
+        interactionFill.fillAmount = 0f;
+        interactionFill.enabled = false;
+    }
+
+    public void OnInteracted()
+    {
+        if (isWitness)
+        {
+            gameController.OnPlayerInvestigate(assignedClue);
+            givedClue = true;
+            indicatorRoot.SetActive(false);
+            speechRoot.SetActive(true);
+            clueImg.enabled = true;
+            return;
+        }
+        gameController.OnPlayerAccuse(this);
     }
 
     #endregion
@@ -130,6 +186,10 @@ public class SuspectHandler : MonoBehaviour
 
     private void ApplyIdentity(MaskIdentity identity)
     {
+        interactionFill.sprite = accuseSprite;
+        interactionFill.color = accuseColor;
+        interaction.sprite = accuseSprite;
+
         foreach (var part in identity.parts)
         {
             // reconstruimos un MaskPartId SOLO para pedir el sprite
@@ -153,7 +213,7 @@ public class SuspectHandler : MonoBehaviour
                 case MaskPartType.Eyes:
                     eyesRenderer.sprite = sprite;
                     break;
-            }            
+            }
         }
     }
 
@@ -212,30 +272,6 @@ public class SuspectHandler : MonoBehaviour
     #endregion
 
     #region Movement
-
-    private void Awake()
-    {
-        rb = GetComponentInChildren<Rigidbody2D>();
-        _spawnPosition = transform.position;
-    }
-    private void Start()
-    {
-        StartCoroutine(DelayInicial());
-        StartCoroutine(StateMachine());
-        delayWitnessing = Random.Range(3f, 20f);
-        if (isWitness) StartCoroutine(DelayedWitnessing(delayWitnessing));
-    }
-
-    private void Update()
-    {
-        HandleWalkAnimation();
-    }
-
-    private void FixedUpdate()
-    {
-        rb.linearVelocity = _moveDir * moveSpeed;
-    }
-
     private IEnumerator StateMachine()
     {
         while (true)
@@ -323,6 +359,13 @@ public class SuspectHandler : MonoBehaviour
             Gizmos.color = _currentState == NPCState.Idle ? Color.red : Color.green;
             Gizmos.DrawWireSphere(transform.position, 0.3f);
         }
+    }
+
+    public Transform GetTransform() => transform;
+
+    public InteractionType GetInteractionType()
+    {
+        return isWitness ? InteractionType.Investigate : InteractionType.Accuse;
     }
 
     #endregion

@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   MoveSpeed: 3.5
   InteractHoldTime: 1
-  InteractRadius: 1.25
+  InteractRadius: 1
   frameInterval: 0.2
   movementThreshold: 0.05
   directionThreshold: 0.01
